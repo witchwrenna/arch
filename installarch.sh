@@ -1,11 +1,71 @@
 #!/usr/bin/env bash
 
+#For other users: Check your IP address!
+
 #Current file system ideas:
-#Get new SSD
-#Wipe 2TB m.2 drive
+
+#Copy 1TB SSD to 2 TB SSD
+
+
+
+#Need to add:
+#1. swap file/ partition was not created (needed to support RAM and hibernation)
+#2. os-prober was not enabled in grub config for dual-booting PCs.
+# disable secureboot for dualbooting
+# Not sure how to check what device is going to be what
+# FUCK I NEED TO LEARN ABOUT LVM
+#BTRFS on LVM
+
+echo -e "\nSetting local keys..\n"
+loadkeys us
+
+#If 64, then UEFI mod. If 32, then 32-bit which is weird. Should be 64. Terminate if 32?
+echo -e "\nChecking boot mode...\n"
+UEFI=cat /sys/firmware/efi/fw_platform_size
+cat /sys/firmware/efi/fw_platform_size
+
+echo -e "\nConfiguring network...\n"
+ip link
+
+echo -e "\nConfirm adding 192.168.1.10 to eth0?\n"
+read -p "Press enter if yes"
+
+ip address add 192.168.1.10/24 dev eth0
+ip route add default via 192.168.1.1 dev eth0
+
+timedatectl set-timezone EST
+
+#Todo might need to double check what arch does by default
 
 # make filesystems
 echo -e "\nCreating Filesystems...\n"
+
+#2 TB NVME for windows
+#4TB drive gets split 1TB OS/2TB Home/1TB empty?
+#3 TB Hard Drives for the NAS? oR JUST TAKE them out forever
+#1 TB SSD FOR GAMES
+#2 TB 2 SSDs for GAMES
+
+#No maybe this is too complicated....
+#4TB nvme for everything except games?
+
+#/Steam folder!
+#Create a 2TB /nonsteam game folder?
+#Maybe a 1TB shadowplay drive?
+#Maybe.... this is the point of LVM is not having to worry about this.
+#/Steam
+
+#NOT READY
+lsblk
+fdisk /dev/nvme0n1
+
+ nvme id-ns -H /dev/nvme0n1 | grep "Relative Performance"
+
+#Don't forget zdisk? The RAM thingy??
+
+#Okay the final idea is...
+#One partition for root, nvme
+#One UEFI system partition 1GB
 
 #Gotta figure this shit OUT
 mkfs.vfat -F32 -n "EFISYSTEM" "${EFI}"
