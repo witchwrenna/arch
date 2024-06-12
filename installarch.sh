@@ -15,6 +15,7 @@
 # Not sure how to check what device is going to be what
 # FUCK I NEED TO LEARN ABOUT LVM
 #BTRFS on LVM
+setfont ter-132n
 
 echo -e "\nSetting local keys..\n"
 loadkeys us
@@ -40,6 +41,10 @@ timedatectl set-timezone EST
 # make filesystems
 echo -e "\nCreating Filesystems...\nactually you gotta do this yourself, loser\n"
 lsblk
+
+$ lsblk --output=NAME,SIZE,VENDOR,MODEL,SERIAL,WWN
+
+ls -l /dev/disk/by-id
 
 #2 TB NVME for windows
 #4TB drive gets split 1TB OS/2TB Home/1TB empty?
