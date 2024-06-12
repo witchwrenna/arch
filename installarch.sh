@@ -1,15 +1,36 @@
 #!/usr/bin/env bash
 
 #For other users: Check your IP address!
+# BIG FUCKING WARNING
+#Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE
+echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
+echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
+echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
+echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
+echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
+echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
+echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
+echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
+echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
+echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
+echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
+echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
+echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
+echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
+echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
+echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
+echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
+echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
+echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
+echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
+echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
+echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
+echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
+echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
+echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
+read -p "Press enter to continue"
 
-#Current file system ideas:
 
-#Copy 1TB SSD to 2 TB SSD
-
-
-
-#Need to add:
-#1. swap file/ partition was not created (needed to support RAM and hibernation)
 #2. os-prober was not enabled in grub config for dual-booting PCs.
 # disable secureboot for dualbooting
 # Not sure how to check what device is going to be what
@@ -21,11 +42,10 @@ echo -e "\nSetting local keys..\n"
 loadkeys us
 
 #If 64, then UEFI mod. If 32, then 32-bit which is weird. Should be 64. Terminate if 32?
-echo -e "\nChecking boot mode...\n"
-UEFI=cat /sys/firmware/efi/fw_platform_size
+echo -e "\Displaying boot mode..."
 cat /sys/firmware/efi/fw_platform_size
 
-echo -e "\Checking network...\n"
+echo -e "\Displaying network...\n"
 ip link
 
 #echo -e "\nConfirm adding 192.168.1.10 to eth0?\n"
@@ -36,8 +56,6 @@ ip link
 
 timedatectl set-timezone EST
 
-#Todo might need to double check what arch does by default
-
 # make filesystems
 echo -e "\nCreating Filesystems...\nactually you gotta do this yourself, loser\n"
 
@@ -45,46 +63,27 @@ lsblk --output=NAME,SIZE,VENDOR,MODEL,SERIAL,WWN
 
 ls -l /dev/disk/by-id
 
-#2 TB NVME for windows
-#4TB drive gets split 1TB OS/2TB Home/1TB empty?
-#3 TB Hard Drives for the NAS? oR JUST TAKE them out forever
-#1 TB SSD FOR GAMES
-#2 TB 2 SSDs for GAMES
-
-#No maybe this is too complicated....
-#4TB nvme for everything except games?
-
-#/Steam folder!
-#Create a 2TB /nonsteam game folder?
-#Maybe a 1TB shadowplay drive?
-#Maybe.... this is the point of LVM is not having to worry about this.
-#/Steam
-
-#NOT READY
-
-#fdisk /dev/nvme0n1
-
-#nvme id-ns -H /dev/nvme0n1 | grep "Relative Performance"
+read -p "If you didn't manually format your drive, create your partitions, and set the script variables, you HAVE to do this now or this script will fail"
 
 #Don't forget zdisk? The RAM thingy??
 
-#Okay the final idea is...
-#One partition for root, nvme
-#One UEFI system partition 1GB
+# Okay the final idea is...
+# One UEFI system partition 800MB
+# 4GB swap - seems unneccesary if using zram but the internet gives lots of advice with no testing to back it up lol
+# Start small, don't overthink. 1TB for root. Figure out where to put the rest later
+# No experience means I don't know what is going to take up space! So don't allocate everything immediately
 
-#Convert 4TB:
-#800MG for efi
-#use these commands
-#lsblk
+#Scripting with sfdisk is annoying so this will be manual
+#Run these commands:
+#lsblk to check disk
 #cfdisk /dev/nvme
-#then make the EFI
-#mkfs.vfat -F32 /dev/nvme
-#mkfs.btrfs /dev/nvme
-#
+#then make the EFI, swap, general partition
+#Set the type correctly!!!!!!!
 
-#ZRAM over ZSwap, except On systems that are starved for RAM, use zswap with a traditional swap device.
+#ZRAM over ZSwap?
+# One person says On systems that are starved for RAM, use zswap with a traditional swap device.
 
-#Gotta figure this shit OUT
+#This section is hardcoded. NEED to change if using different hardware.
 
 EFI="/dev/by-id/nvme-eui.0025384141-part1"
 SWAP="/dev/by-id/nvme-eui.0025384141-part2"
@@ -106,13 +105,17 @@ echo "--------------------------------------"
 pacstrap -K /mnt base linux linux-firmware intel-ucode  --noconfirm --needed
 
 # echo "--------------------------------------"
-# echo "-- Setup Dependencies               --"
+# echo "-- Setup cool stuff               --"
 # echo "--------------------------------------"
 
 pacstrap -K /mnt hyfetch htop git sudo htop nvim nano --noconfirm --needed
 
-# fstab
+# Save current mount configuration
 genfstab -U /mnt >> /mnt/etc/fstab
+
+
+# ----------- EVERYTHING BELOW IS UNTOUCHED FROM ORIGINAL SCRIPT --------------
+# ----------- This is as far as I went! ---------------------------------------
 
 # echo "--------------------------------------"
 # echo "-- Bootloader Installation  --"
