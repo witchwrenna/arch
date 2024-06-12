@@ -40,9 +40,8 @@ timedatectl set-timezone EST
 
 # make filesystems
 echo -e "\nCreating Filesystems...\nactually you gotta do this yourself, loser\n"
-lsblk
 
-$ lsblk --output=NAME,SIZE,VENDOR,MODEL,SERIAL,WWN
+lsblk --output=NAME,SIZE,VENDOR,MODEL,SERIAL,WWN
 
 ls -l /dev/disk/by-id
 
@@ -87,32 +86,33 @@ ls -l /dev/disk/by-id
 
 #Gotta figure this shit OUT
 
-# mkfs.vfat -F32 -n "EFISYSTEM" "${EFI}"
-# mkswap "${SWAP}"
-# swapon "${SWAP}"
-# mkfs.ext4 -L "ROOT" "${ROOT}"
+EFI="/dev/by-id/nvme-eui.0025384141-part1"
+SWAP="/dev/by-id/nvme-eui.0025384141-part2"
+ROOT="/dev/by-id/nvme-eui.0025384141-part3"
 
-# # mount target
-# mount -t ext4 "${ROOT}" /mnt
-# mkdir /mnt/boot
-# mount -t vfat "${EFI}" /mnt/boot/
+mkfs.vfat -F32 -n "EFI" "${EFI}"
+mkswap "${SWAP}"
+mkfs.btrfs -L "Root" "${ROOT}"
 
-# echo "--------------------------------------"
-# echo "-- INSTALLING Arch Linux BASE on Main Drive       --"
-# echo "--------------------------------------"
-# pacstrap /mnt base base-devel --noconfirm --needed
+# mount target
+mount -t ext4 "${ROOT}" /mnt
+mkdir /mnt/boot
+mount -t vfat "${EFI}" /mnt/boot/
+swapon "${SWAP}"
 
-# # kernel
-# pacstrap /mnt linux linux-firmware --noconfirm --needed
+echo "--------------------------------------"
+echo "-- INSTALLING Arch Linux BASE on Main Drive --"
+echo "--------------------------------------"
+pacstrap -K /mnt base linux linux-firmware intel-ucode  --noconfirm --needed
 
 # echo "--------------------------------------"
 # echo "-- Setup Dependencies               --"
 # echo "--------------------------------------"
 
-# pacstrap /mnt networkmanager network-manager-applet wireless_tools nano intel-ucode bluez bluez-utils blueman git --noconfirm --needed
+pacstrap -K /mnt hyfetch htop git sudo htop nvim nano --noconfirm --needed
 
-# # fstab
-# genfstab -U /mnt >> /mnt/etc/fstab
+# fstab
+genfstab -U /mnt >> /mnt/etc/fstab
 
 # echo "--------------------------------------"
 # echo "-- Bootloader Installation  --"
