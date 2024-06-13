@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-#For other users: Check your IP address!
+#TO Do: automatic snapshots on btrfs??
+
 # BIG FUCKING WARNING
 #Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE
 echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
@@ -30,12 +31,14 @@ echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT 
 echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
 read -p "Press enter to continue"
 
+read -p "DID YOU REMOVE THE SWAP PARTITION FROM YOUR PREVIOUS BOOT? AND UPDATE THE PARTITION NAMES IN THE SCRIPT? DOUBLE CHECK FIRST IDIOT"
 
-#2. os-prober was not enabled in grub config for dual-booting PCs.
-# disable secureboot for dualbooting
+
+# disable secureboot for dualbooting?
 # Not sure how to check what device is going to be what
 # FUCK I NEED TO LEARN ABOUT LVM
-#BTRFS on LVM
+#BTRFS on LVM???
+
 setfont ter-132n
 
 echo -e "\nSetting local keys..\n"
@@ -65,11 +68,9 @@ ls -l /dev/disk/by-id
 
 read -p "If you didn't manually format your drive, create your partitions, and set the script variables, you HAVE to do this now or this script will fail"
 
-#Don't forget zdisk? The RAM thingy??
 
 # Okay the final idea is...
 # One UEFI system partition 800MB
-# 4GB swap - seems unneccesary if using zram but the internet gives lots of advice with no testing to back it up lol
 # Start small, don't overthink. 1TB for root. Figure out where to put the rest later
 # No experience means I don't know what is going to take up space! So don't allocate everything immediately
 
@@ -77,112 +78,103 @@ read -p "If you didn't manually format your drive, create your partitions, and s
 #Run these commands:
 #lsblk to check disk
 #cfdisk /dev/nvme
-#then make the EFI, swap, general partition
+#then make the EFI, general partition
 #Set the type correctly!!!!!!!
 
 #ZRAM over ZSwap?
 # One person says On systems that are starved for RAM, use zswap with a traditional swap device.
 
-#This section is hardcoded. NEED to change if using different hardware.
+#This section is hardcoded. NEED to change if using different drives.
+
+echo -e "\nSettings filesystem to BTRFS\n"
 
 EFI="/dev/by-id/nvme-eui.0025384141-part1"
-SWAP="/dev/by-id/nvme-eui.0025384141-part2"
-ROOT="/dev/by-id/nvme-eui.0025384141-part3"
+ROOT="/dev/by-id/nvme-eui.0025384141-part2"
 
 mkfs.vfat -F32 -n "EFI" "${EFI}"
-mkswap "${SWAP}"
 mkfs.btrfs -L "Root" "${ROOT}"
 
+echo -e "\nCreating Swap File\n"
+
+btrfs subvolume create /swap
+btrfs filesystem mkswapfile --size 4g --uuid clear /swap/swapfile
+swapon /swap/swapfile
+
 # mount target
-mount -t ext4 "${ROOT}" /mnt
+mount -t btrfs "${ROOT}" /mnt
 mkdir /mnt/boot
 mount -t vfat "${EFI}" /mnt/boot/
 swapon "${SWAP}"
 
 echo "--------------------------------------"
-echo "-- INSTALLING Arch Linux BASE on Main Drive --"
+echo "-- INSTALLING Arch Linux on Main Drive --"
 echo "--------------------------------------"
 pacstrap -K /mnt base linux linux-firmware intel-ucode  --noconfirm --needed
 
-# echo "--------------------------------------"
-# echo "-- Setup cool stuff               --"
-# echo "--------------------------------------"
+echo "--------------------------------------"
+echo "-- Installing the important stuff               --"
+echo "--------------------------------------"
 
-pacstrap -K /mnt hyfetch htop git sudo htop nvim nano --noconfirm --needed
+pacstrap -K /mnt hyfetch htop git sudo nvim nano --noconfirm --needed
 
 # Save current mount configuration
 genfstab -U /mnt >> /mnt/etc/fstab
 
+cat /mnt/etc/fstab
 
-# ----------- EVERYTHING BELOW IS UNTOUCHED FROM ORIGINAL SCRIPT --------------
-# ----------- This is as far as I went! ---------------------------------------
+#LOOK INTO THIS FOR BTRFS https://wiki.archlinux.org/title/Chroot#Using_arch-chroot
+#Timeshift on btrfs with grub-btrfs can't be beat for snappyshots :3
 
-# echo "--------------------------------------"
-# echo "-- Bootloader Installation  --"
-# echo "--------------------------------------"
-# bootctl install --path /mnt/boot
-# echo "default arch.conf" >> /mnt/boot/loader/loader.conf
-# cat <<EOF > /mnt/boot/loader/entries/arch.conf
-# title Arch Linux
-# linux /vmlinuz-linux
-# initrd /initramfs-linux.img
-# options root=${ROOT} rw
-# EOF
+cat <<REALEND > /mnt/next.sh
+useradd -m -g witches -s /bin/zsh lilith
+usermod -aG wheel,storage,audio,video lilith
+echo lilith:lilith | chpasswd
+sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
+
+echo "-------------------------------------------------"
+echo "Setup Language to US and set locale"
+echo "-------------------------------------------------"
+sed -i 's/^#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
+locale-gen
+echo "LANG=en_US.UTF-8" >> /etc/locale.conf
+
+ln -sf /usr/share/zoneinfo/US/Eastern /etc/localtime
+hwclock --systohc
+
+echo "-------------------------------------------------"
+echo "Setting up network loopback"
+echo "-------------------------------------------------"
+echo "slut" > /etc/hostname
+cat <<EOF > /etc/hosts
+127.0.0.1	localhost
+::1			localhost
+127.0.1.1	slut.localdomain	slut
+EOF
+
+echo "-------------------------------------------------"
+echo "Setting up grub"
+echo "-------------------------------------------------"
+pacman -S grub efibootmgr dosfstools mtools os-prober
+grub-install --target=x86-64-efi --efi-directory=/boot --bootloader-id="Multiboot"
+sed -i 's/^#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false' /etc/default/grub
+grub-mkconfig -o /boot/grub/grub.cfg
+
+echo "-------------------------------------------------"
+echo "Display and Audio Drivers NOT DONE"
+echo "-------------------------------------------------"
+
+#plans: pipewire, wayland, hyprland
 
 
-# cat <<REALEND > /mnt/next.sh
-# useradd -m $USER
-# usermod -aG wheel,storage,power,audio $USER
-# echo $USER:$PASSWORD | chpasswd
-# sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
-
-# echo "-------------------------------------------------"
-# echo "Setup Language to US and set locale"
-# echo "-------------------------------------------------"
-# sed -i 's/^#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
-# locale-gen
-# echo "LANG=en_US.UTF-8" >> /etc/locale.conf
-
-# ln -sf /usr/share/zoneinfo/Asia/Kathmandu /etc/localtime
-# hwclock --systohc
-
-# echo "arch" > /etc/hostname
-# cat <<EOF > /etc/hosts
-# 127.0.0.1	localhost
-# ::1			localhost
-# 127.0.1.1	arch.localdomain	arch
-# EOF
-
-# echo "-------------------------------------------------"
-# echo "Display and Audio Drivers"
-# echo "-------------------------------------------------"
-
-# pacman -S xorg pulseaudio --noconfirm --needed
-
+#Figure out how to use the systemd network thing instead of networkmanager? idk which is better
+#Do i need the bluetooth stack if I'm using USB bluetooth??
 # systemctl enable NetworkManager bluetooth
 
-# #DESKTOP ENVIRONMENT
-# if [[ $DESKTOP == '1' ]]
-# then 
-#     pacman -S gnome gdm --noconfirm --needed
-#     systemctl enable gdm
-# elif [[ $DESKTOP == '2' ]]
-# then
-#     pacman -S plasma sddm kde-applications --noconfirm --needed
-#     systemctl enable sddm
-# elif [[ $DESKTOP == '3' ]]
-# then
-#     pacman -S xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm --needed
-#     systemctl enable lightdm
-# else
-#     echo "You have choosen to Install Desktop Yourself"
-# fi
+echo "-------------------------------------------------"
+echo "Install Complete, You can reboot now"
+echo "-------------------------------------------------"
 
-# echo "-------------------------------------------------"
-# echo "Install Complete, You can reboot now"
-# echo "-------------------------------------------------"
-
-# REALEND
+REALEND
 
 
-# arch-chroot /mnt sh next.sh
+arch-chroot /mnt sh next.sh
