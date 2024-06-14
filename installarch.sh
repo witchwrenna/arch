@@ -115,7 +115,7 @@ echo "--------------------------------------"
 echo "-- Installing the important stuff               --"
 echo "--------------------------------------"
 
-pacstrap -K /mnt hyfetch htop git sudo nvim nano --noconfirm --needed
+pacstrap -K /mnt hyfetch htop git sudo nvim nano zsh --noconfirm --needed
 
 # Save current mount configuration
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -154,7 +154,7 @@ EOF
 echo "-------------------------------------------------"
 echo "Setting up grub"
 echo "-------------------------------------------------"
-pacman -S grub efibootmgr dosfstools mtools os-prober
+pacman -S grub efibootmgr dosfstools mtools os-prober --noconfirm --needed
 grub-install --target=x86-64-efi --efi-directory=/boot --bootloader-id="Multiboot"
 sed -i 's/^#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false' /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
@@ -163,11 +163,19 @@ echo "-------------------------------------------------"
 echo "Display and Audio Drivers NOT DONE"
 echo "-------------------------------------------------"
 
+#Should include nvidia drivers + vulkan + Cuda + OpenCL
+pacman -S nvidia nvidia-utils nvidia-settings  --noconfirm --needed
+
 #plans: pipewire, wayland, hyprland
+#More Todo:
+systemd-networkd config
+nvidia drivers
 
 
 #Figure out how to use the systemd network thing instead of networkmanager? idk which is better
 #Do i need the bluetooth stack if I'm using USB bluetooth??
+
+systemctl --user enable pipewire pipewire-pulse
 # systemctl enable NetworkManager bluetooth
 
 echo "-------------------------------------------------"
