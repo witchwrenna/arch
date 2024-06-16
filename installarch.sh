@@ -62,9 +62,9 @@ timedatectl set-timezone EST
 # make filesystems
 echo -e "\nCreating Filesystems...\nactually you gotta do this yourself, loser\n"
 
-lsblk --output=NAME,SIZE,VENDOR,MODEL,SERIAL,WWN
+#lsblk --output=NAME,SIZE,VENDOR,MODEL,SERIAL,WWN
 
-ls -l /dev/disk/by-id
+#ls -l /dev/disk/by-id
 
 read -p "If you didn't manually format your drive, create your partitions, and set the script variables, you HAVE to do this now or this script will fail"
 
@@ -89,7 +89,7 @@ read -p "If you didn't manually format your drive, create your partitions, and s
 echo -e "\nSettings filesystem to BTRFS\n"
 
 EFI="/dev/disk/by-id/nvme-eui.002538414143a0a5-part1"
-ROOT="/dev/disk/by-id/nvme-eui.00253841413a0a5-part2"
+ROOT="/dev/disk/by-id/nvme-eui.002538414143a0a5-part2"
 
 mkfs.vfat -F32 -n "EFI" "${EFI}"
 mkfs.btrfs -L "Root" "${ROOT}"
