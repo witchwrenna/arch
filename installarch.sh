@@ -91,7 +91,7 @@ echo -e "\nSettings filesystem to BTRFS\n"
 EFI="/dev/disk/by-id/nvme-eui.002538414143a0a5-part1"
 ROOT="/dev/disk/by-id/nvme-eui.002538414143a0a5-part2"
 
-mkfs.vfat -F32 -n "EFI" "${EFI}" -f 
+mkfs.vfat -F32 -n "EFI" "${EFI}"
 mkfs.btrfs -L "Root" "${ROOT}" -f
 
 echo -e "\nCreating Swap File\n"
