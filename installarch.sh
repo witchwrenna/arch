@@ -140,7 +140,7 @@ echo "Setting up grub"
 echo "-------------------------------------------------"
 pacman -S grub efibootmgr dosfstools mtools os-prober --noconfirm --needed
 mount /dev/disk/by-id/nvme-eui.002538592140e412-part4 /mnt/win11
-grub-install --target=x86-64-efi --efi-directory=/boot/efi --bootloader-id="DemonBoot"
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id="DemonBoot"
 sed -i 's/^#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false' /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
