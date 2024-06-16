@@ -5,34 +5,7 @@
 # BIG FUCKING WARNING
 #Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE
 echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
-echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
-echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
-echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
-echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
-echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
-echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
-echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
-echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
-echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
-echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
-echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
-echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
-echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
-echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
-echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
-echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
-echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
-echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
-echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
-echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
-echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
-echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
-echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
-echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
 read -p "Press enter to continue"
-
-read -p "DID YOU REMOVE THE SWAP PARTITION FROM YOUR PREVIOUS BOOT? AND UPDATE THE PARTITION NAMES IN THE SCRIPT? DOUBLE CHECK FIRST IDIOT"
-
 
 # disable secureboot for dualbooting?
 # Not sure how to check what device is going to be what
@@ -45,10 +18,10 @@ echo -e "\nSetting local keys..\n"
 loadkeys us
 
 #If 64, then UEFI mod. If 32, then 32-bit which is weird. Should be 64. Terminate if 32?
-echo -e "\Displaying boot mode..."
+echo -e "\nDisplaying boot mode..."
 cat /sys/firmware/efi/fw_platform_size
 
-echo -e "\Displaying network...\n"
+echo -e "\n\nDisplaying network...\n"
 ip link
 
 #echo -e "\nConfirm adding 192.168.1.10 to eth0?\n"
@@ -96,9 +69,7 @@ mkfs.btrfs -L "Root" "${ROOT}" -f
 
 echo -e "\nCreating Swap File\n"
 
-btrfs subvolume create /swap
-btrfs filesystem mkswapfile --size 4g --uuid clear /swap/swapfile
-swapon /swap/swapfile
+
 
 # mount target
 mount "${ROOT}" /mnt
@@ -106,12 +77,18 @@ mkdir /mnt/boot
 mount -t vfat "${EFI}" /mnt/boot/
 swapon "${SWAP}"
 
-read -p "filesystem done press enter"
+btrfs subvolume create /mnt/swap
+btrfs filesystem mkswapfile --size 4g --uuid clear /mnt/swap/swapfile
+swapon /mnt/swap/swapfile
+
+read -p "filesystem done (enter)"
 
 echo "--------------------------------------"
 echo "-- INSTALLING Arch Linux on Main Drive --"
 echo "--------------------------------------"
 pacstrap -K /mnt base linux linux-firmware intel-ucode  --noconfirm --needed
+
+read -p "Main install done (enter)"
 
 echo "--------------------------------------"
 echo "-- Installing the important stuff               --"
@@ -123,6 +100,8 @@ pacstrap -K /mnt hyfetch htop git sudo nvim nano zsh --noconfirm --needed
 genfstab -U /mnt >> /mnt/etc/fstab
 
 cat /mnt/etc/fstab
+
+read -p "\nfstab done please check output(enter)"
 
 #LOOK INTO THIS FOR BTRFS https://wiki.archlinux.org/title/Chroot#Using_arch-chroot
 #Timeshift on btrfs with grub-btrfs can't be beat for snappyshots :3
