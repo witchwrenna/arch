@@ -106,6 +106,8 @@ mkdir /mnt/boot
 mount -t vfat "${EFI}" /mnt/boot/
 swapon "${SWAP}"
 
+read -p "filesystem done press enter"
+
 echo "--------------------------------------"
 echo "-- INSTALLING Arch Linux on Main Drive --"
 echo "--------------------------------------"
