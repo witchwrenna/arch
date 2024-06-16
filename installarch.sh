@@ -88,8 +88,8 @@ read -p "If you didn't manually format your drive, create your partitions, and s
 
 echo -e "\nSettings filesystem to BTRFS\n"
 
-EFI="/dev/by-id/nvme-eui.0025384141-part1"
-ROOT="/dev/by-id/nvme-eui.0025384141-part2"
+EFI="/dev/disk/by-id/nvme-eui.0025384141-part1"
+ROOT="/dev/disk/by-id/nvme-eui.0025384141-part2"
 
 mkfs.vfat -F32 -n "EFI" "${EFI}"
 mkfs.btrfs -L "Root" "${ROOT}"
