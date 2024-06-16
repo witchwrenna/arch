@@ -64,6 +64,7 @@ echo -e "\nSettings filesystem to BTRFS\n"
 EFI="/dev/disk/by-id/nvme-eui.002538414143a0a5-part1"
 ROOT="/dev/disk/by-id/nvme-eui.002538414143a0a5-part2"
 
+ROOT="/dev/disk/by-id/nvme-eui.002538592140e412-part2"
 mkfs.vfat -F32 -n "EFI" "${EFI}"
 mkfs.btrfs -L "Root" "${ROOT}" -f
 
@@ -72,7 +73,8 @@ echo -e "\nCreating Swap File\n"
 # mount target
 mount "${ROOT}" /mnt
 mkdir /mnt/boot
-mount -t vfat "${EFI}" /mnt/boot/
+mkdir /mnt/boot/efi
+mount -t vfat "${EFI}" /mnt/boot/efi
 
 btrfs subvolume create /mnt/swap
 btrfs filesystem mkswapfile --size 4g --uuid clear /mnt/swap/swapfile
@@ -86,7 +88,7 @@ sed '/ParallelDownloads/s/^#//g' -o /etc/pacman.conf
 echo "--------------------------------------"
 echo "-- INSTALLING Arch Linux on Main Drive --"
 echo "--------------------------------------"
-pacstrap -K /mnt base linux linux-firmware intel-ucode btrfs-progs  --noconfirm --needed
+pacstrap -K /mnt base linux linux-firmware intel-ucode btrfs-progs man  --noconfirm --needed
 
 read -p "Main install done (enter)"
 
@@ -137,7 +139,8 @@ echo "-------------------------------------------------"
 echo "Setting up grub"
 echo "-------------------------------------------------"
 pacman -S grub efibootmgr dosfstools mtools os-prober --noconfirm --needed
-grub-install --target=x86-64-efi --efi-directory=/boot --bootloader-id="Multiboot"
+mount /dev/disk/by-id/nvme-eui.002538592140e412-part4 /mnt/win11
+grub-install --target=x86-64-efi --efi-directory=/boot/efi --bootloader-id="DemonBoot"
 sed -i 's/^#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false' /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
@@ -177,3 +180,5 @@ arch-chroot /mnt sh next.sh
 # If i understood this correctly, i make a file named nvidia.conf in /etc/modprobe.d/ and in that file i write:
 
 # options nvidia_drm modeset=1 fbdev=1 
+
+#todo: install man, internet
