@@ -137,7 +137,7 @@ echo "-------------------------------------------------"
 echo "Setting up grub"
 echo "-------------------------------------------------"
 pacman -S grub efibootmgr dosfstools mtools os-prober --noconfirm --needed
-grub-install --target=x86-64-efi --efi-directory=/boot --bootloader-id="Multiboot"
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id="Multiboot"
 sed -i 's/^#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false' /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
