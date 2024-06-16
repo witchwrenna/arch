@@ -69,13 +69,10 @@ mkfs.btrfs -L "Root" "${ROOT}" -f
 
 echo -e "\nCreating Swap File\n"
 
-
-
 # mount target
 mount "${ROOT}" /mnt
 mkdir /mnt/boot
 mount -t vfat "${EFI}" /mnt/boot/
-swapon "${SWAP}"
 
 btrfs subvolume create /mnt/swap
 btrfs filesystem mkswapfile --size 4g --uuid clear /mnt/swap/swapfile
