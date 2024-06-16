@@ -101,7 +101,7 @@ btrfs filesystem mkswapfile --size 4g --uuid clear /swap/swapfile
 swapon /swap/swapfile
 
 # mount target
-mount -t btrfs "${ROOT}" /mnt
+mount "${ROOT}" /mnt
 mkdir /mnt/boot
 mount -t vfat "${EFI}" /mnt/boot/
 swapon "${SWAP}"
