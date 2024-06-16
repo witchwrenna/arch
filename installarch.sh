@@ -83,6 +83,8 @@ swapon /mnt/swap/swapfile
 
 read -p "filesystem done (enter)"
 
+sed '/ParallelDownloads/s/^#//g' -o /etc/pacman.conf
+
 echo "--------------------------------------"
 echo "-- INSTALLING Arch Linux on Main Drive --"
 echo "--------------------------------------"
@@ -91,10 +93,10 @@ pacstrap -K /mnt base linux linux-firmware intel-ucode  --noconfirm --needed
 read -p "Main install done (enter)"
 
 echo "--------------------------------------"
-echo "-- Installing the important stuff               --"
+echo "-- Installing the important stuff --"
 echo "--------------------------------------"
 
-pacstrap -K /mnt hyfetch htop git sudo nvim nano zsh --noconfirm --needed
+pacstrap -K /mnt hyfetch htop git sudo neovim nano zsh firefox --noconfirm --needed
 
 # Save current mount configuration
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -107,6 +109,7 @@ read -p "\nfstab done please check output(enter)"
 #Timeshift on btrfs with grub-btrfs can't be beat for snappyshots :3
 
 cat <<REALEND > /mnt/next.sh
+groupadd witches
 useradd -m -g witches -s /bin/zsh lilith
 usermod -aG wheel,storage,audio,video lilith
 echo lilith:lilith | chpasswd
