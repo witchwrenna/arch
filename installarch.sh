@@ -80,6 +80,7 @@ swapon /mnt/swap/swapfile
 
 read -p "filesystem done (enter)"
 
+#Let's enable parallel downloads :3
 sed '/ParallelDownloads/s/^#//g' -o /etc/pacman.conf
 
 echo "--------------------------------------"
