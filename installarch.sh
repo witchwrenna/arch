@@ -164,12 +164,12 @@ echo "Display and Audio Drivers NOT DONE"
 echo "-------------------------------------------------"
 
 #Should include nvidia drivers + vulkan + Cuda + OpenCL
-pacman -S nvidia nvidia-utils nvidia-settings  --noconfirm --needed
+pacman -S nvidia nvidia-utils nvidia-settings --noconfirm --needed
 
 #plans: pipewire, wayland, hyprland
 #More Todo:
-systemd-networkd config
-nvidia drivers
+#systemd-networkd config
+#nvidia drivers
 
 
 #Figure out how to use the systemd network thing instead of networkmanager? idk which is better
@@ -186,3 +186,12 @@ REALEND
 
 
 arch-chroot /mnt sh next.sh
+
+
+# How do i do that exactly? Some youtube guides mention editing /etc/mkinitcpio.conf and adding nvidia_drm there, but what does "set modeset and fbdev FOR nvidia_drm" mean?
+
+# How do i set those parameters for the nvidia_drm module? It's not exactly clear on that. It does link to another kernel module page, but there it says i need to make a file in /etc/modprobe.d/myfilename.conf (i assume naming it nvidia.conf) with options module_name parameter_name=parameter_value.
+
+# If i understood this correctly, i make a file named nvidia.conf in /etc/modprobe.d/ and in that file i write:
+
+# options nvidia_drm modeset=1 fbdev=1 
