@@ -151,12 +151,6 @@ echo "-------------------------------------------------"
 #Should include nvidia drivers + vulkan + Cuda + OpenCL
 pacman -S nvidia nvidia-utils nvidia-settings --noconfirm --needed
 
-#plans: pipewire, wayland, hyprland
-#More Todo:
-#systemd-networkd config
-#nvidia drivers
-
-
 #Figure out how to use the systemd network thing instead of networkmanager? idk which is better
 #Do i need the bluetooth stack if I'm using USB bluetooth??
 
@@ -181,4 +175,17 @@ arch-chroot /mnt sh next.sh
 
 # options nvidia_drm modeset=1 fbdev=1 
 
-#todo: get internet working
+# todo: 
+# https://wiki.archlinux.org/title/systemd-networkd
+# pipeware
+# nvidia
+# wayland+hyprland
+# need a login manager
+# set up plymouth
+# look at RICING stuff
+# Plymouth?
+# https://wiki.archlinux.org/title/Category:Eye_candy
+# https://github.com/fosslife/awesome-ricing
+# plans: pipewire, wayland, hyprland
+# More Todo:
+# systemd-networkd config
