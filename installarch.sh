@@ -88,7 +88,7 @@ sed '/ParallelDownloads/s/^#//g' -o /etc/pacman.conf
 echo "--------------------------------------"
 echo "-- INSTALLING Arch Linux on Main Drive --"
 echo "--------------------------------------"
-pacstrap -K /mnt base linux linux-firmware intel-ucode btrfs-progs man  --noconfirm --needed
+pacstrap -K /mnt base linux linux-firmware intel-ucode btrfs-progs   --noconfirm --needed
 
 read -p "Main install done (enter)"
 
@@ -96,14 +96,14 @@ echo "--------------------------------------"
 echo "-- Installing the important stuff --"
 echo "--------------------------------------"
 
-pacstrap -K /mnt hyfetch htop git sudo neovim nano zsh firefox --noconfirm --needed
+pacstrap -K /mnt hyfetch man htop git sudo neovim nano zsh firefox --noconfirm --needed
 
 # Save current mount configuration
 genfstab -U /mnt >> /mnt/etc/fstab
 
 cat /mnt/etc/fstab
 
-read -p "\nfstab done please check output(enter)"
+read -p "fstab done please check output(enter)"
 
 #LOOK INTO THIS FOR BTRFS https://wiki.archlinux.org/title/Chroot#Using_arch-chroot
 #Timeshift on btrfs with grub-btrfs can't be beat for snappyshots :3
@@ -181,4 +181,4 @@ arch-chroot /mnt sh next.sh
 
 # options nvidia_drm modeset=1 fbdev=1 
 
-#todo: install man, internet
+#todo: get internet working
