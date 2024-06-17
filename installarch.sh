@@ -82,7 +82,7 @@ sed '/ParallelDownloads/s/^#//g' -o /etc/pacman.conf
 echo "--------------------------------------"
 echo "-- INSTALLING Arch Linux on Main Drive --"
 echo "--------------------------------------"
-pacstrap -K /mnt base linux linux-firmware intel-ucode btrfs-progs   --noconfirm --needed
+pacstrap -K /mnt base linux linux-firmware linux-headers intel-ucode btrfs-progs   --noconfirm --needed
 
 #read -p "Main install done (enter)"
 
@@ -132,24 +132,24 @@ cat <<EOF > /etc/hosts
 EOF
 
 echo "-------------------------------------------------"
-echo "Setting up Networking"
+echo "Setting up Networking (need to fix)"
 echo "-------------------------------------------------"
 
-cat <<EOF > /etc/systemd/network/slut.network
-[Match]
-Name=enp1s0
-#NEED TO CHECK NAME AND UPDATE
+# cat <<EOF > /etc/systemd/network/slut.network
+# [Match]
+# Name=enp1s0
+# #NEED TO CHECK NAME AND UPDATE
 
-[Network]
-Address=192.168.1.10/24
-Gateway=192.168.1.1
-DNS=1.1.1.1
-EOF
+# [Network]
+# Address=192.168.1.10/24
+# Gateway=192.168.1.1
+# DNS=1.1.1.1
+# EOF
 
-#To put in stuff
-cat <<EOF > /etc/resolv.conf 
-search home.arpa
-EOF
+# #To put in stuff
+# cat <<EOF > /etc/resolv.conf 
+# search home.arpa
+# EOF
 
 systemctl start systemd-networkd.service
 systemctl start systemd-resolved.service
@@ -162,7 +162,8 @@ pacman -S grub efibootmgr dosfstools mtools os-prober --noconfirm --needed
 #need to mount windows to see stuff
 mount /dev/disk/by-id/nvme-eui.002538592140e412-part4 /mnt/win11
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id="DemonBoot"
-sed -i 's/^#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false' /etc/default/grub
+sed -i 's/^#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' /etc/default/grub
+sed -i '/.*^GRUB_CMDLINE_LINUX_DEFAULT=.*/ c\GRUB_CMDLINE_LINUX_DEFAULT="quiet loglevel=3 nvidia_drm.modeset=1/"' /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
 echo "-------------------------------------------------"
@@ -170,7 +171,8 @@ echo "Installing display Drivers"
 echo "-------------------------------------------------"
 
 #Should include nvidia drivers + vulkan + Cuda + OpenCL
-pacman -S nvidia nvidia-utils nvidia-settings --noconfirm --needed
+#https://wiki.hyprland.org/Nvidia/
+pacman -S nvidia nvidia-utils nvidia-settings lib32-nvidia-utils --noconfirm --needed
 
 echo "-------------------------------------------------"
 echo "Installing wayland"
