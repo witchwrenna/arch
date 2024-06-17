@@ -108,6 +108,9 @@ usermod -aG wheel,storage,audio,video lilith
 echo lilith:lilith | chpasswd
 sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
 
+#Let's enable parallel downloads :3
+sed '/ParallelDownloads/s/^#//g' -o /etc/pacman.conf
+
 echo "-------------------------------------------------"
 echo "Setup Language to US and set locale"
 echo "-------------------------------------------------"
@@ -163,11 +166,19 @@ sed -i 's/^#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false' /etc/defa
 grub-mkconfig -o /boot/grub/grub.cfg
 
 echo "-------------------------------------------------"
-echo "Display Drivers NOT DONE"
+echo "Installing display Drivers"
 echo "-------------------------------------------------"
 
 #Should include nvidia drivers + vulkan + Cuda + OpenCL
 pacman -S nvidia nvidia-utils nvidia-settings --noconfirm --needed
+
+echo "-------------------------------------------------"
+echo "Installing wayland"
+echo "-------------------------------------------------"
+
+pacman -S hyprland lightdm --noconfirm --needed
+
+systemctl enable lightdm.service
 
 echo "-------------------------------------------------"
 echo "Setting up audio"
@@ -175,14 +186,6 @@ echo "-------------------------------------------------"
 
 pacman -S pipewire pipewire-audio pipewire-pulse pipewire-jack wireplumber --noconfirm --needed
 systemctl --user enable pipewire pipewire-pulse wireplumber
-
-
-
-#Figure out how to use the systemd network thing instead of networkmanager? idk which is better
-#Do i need the bluetooth stack if I'm using USB bluetooth??
-# systemctl enable NetworkManager bluetooth
-
-#Setup dotfiles copnfiguration
 
 echo "-------------------------------------------------"
 echo "Install Complete, You can reboot now"
@@ -210,9 +213,6 @@ dotfiles config --local status.showUntrackedFiles no
 #dotfiles add $Filename
 #dotfiles comment -m "Updating file!"
 #dotfiles push
-
-
-
 
 
 GIT
