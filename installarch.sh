@@ -129,6 +129,30 @@ cat <<EOF > /etc/hosts
 EOF
 
 echo "-------------------------------------------------"
+echo "Setting up Networking"
+echo "-------------------------------------------------"
+
+cat <<EOF > /etc/systemd/network/slut.network
+[Match]
+Name=enp1s0
+#NEED TO CHECK NAME AND UPDATE
+
+[Network]
+Address=192.168.1.10/24
+Gateway=192.168.1.1
+DNS=1.1.1.1
+EOF
+
+#To put in stuff
+cat <<EOF > /etc/resolv.conf 
+search home.arpa
+EOF
+
+systemctl start systemd-networkd.service
+systemctl start systemd-resolved.service
+
+
+echo "-------------------------------------------------"
 echo "Setting up grub"
 echo "-------------------------------------------------"
 pacman -S grub efibootmgr dosfstools mtools os-prober --noconfirm --needed
@@ -139,19 +163,23 @@ sed -i 's/^#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false' /etc/defa
 grub-mkconfig -o /boot/grub/grub.cfg
 
 echo "-------------------------------------------------"
-echo "Display and Audio Drivers NOT DONE"
+echo "Display Drivers NOT DONE"
 echo "-------------------------------------------------"
 
 #Should include nvidia drivers + vulkan + Cuda + OpenCL
 pacman -S nvidia nvidia-utils nvidia-settings --noconfirm --needed
 
-#Figure out how to use the systemd network thing instead of networkmanager? idk which is better
-#Do i need the bluetooth stack if I'm using USB bluetooth??
-
+echo "-------------------------------------------------"
+echo "Setting up audio"
+echo "-------------------------------------------------"
 
 pacman -S pipewire pipewire-audio pipewire-pulse pipewire-jack wireplumber --noconfirm --needed
-
 systemctl --user enable pipewire pipewire-pulse wireplumber
+
+
+
+#Figure out how to use the systemd network thing instead of networkmanager? idk which is better
+#Do i need the bluetooth stack if I'm using USB bluetooth??
 # systemctl enable NetworkManager bluetooth
 
 #Setup dotfiles copnfiguration
@@ -165,10 +193,14 @@ REALEND
 cat <<GIT > /mnt/git.sh
 
 echo "-------------------------------------------------"
-echo "Setup dotfiles"
+echo "Setup git and dotfiles"
 echo "-------------------------------------------------"
 
 mkdir $HOME/dotfiles
+
+git config --global user.name "Witch Wrenna"
+git config --global user.email witchwrenna@gmail.com
+
 git init --bare $HOME/dotfiles
 alias dotfiles='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME' >> $HOME/.zshrc
 source $HOME/.zshrc
