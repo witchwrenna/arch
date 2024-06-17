@@ -4,8 +4,11 @@
 
 # BIG FUCKING WARNING
 #Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE
-echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE"
-read -p "Press enter to continue"
+echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! IF YOU ARE NOT WREN THEN YOU NEED TO UPDATE THE SCRIPT"
+echo -e "\nIf you didn't manually format your drive and create your partitions and update the script variables, you HAVE to do this now or this script will fail"
+echo -e "\nCheck the script comments and understand what it's doing."
+echo -e "\nThis is NOT a general installation script, it is hard coded to my computer and preferences"
+read -p "Press enter if you think everything is good!"
 
 # disable secureboot for dualbooting?
 # Not sure how to check what device is going to be what
@@ -18,7 +21,7 @@ echo -e "\nSetting local keys..\n"
 loadkeys us
 
 #If 64, then UEFI mod. If 32, then 32-bit which is weird. Should be 64. Terminate if 32?
-echo -e "\nDisplaying boot mode..."
+echo -e "\nDisplaying boot mode...make sure it's 64"
 cat /sys/firmware/efi/fw_platform_size
 
 echo -e "\n\nDisplaying network...\n"
@@ -39,14 +42,6 @@ echo -e "\nCreating Filesystems...\nactually you gotta do this yourself, loser\n
 
 #ls -l /dev/disk/by-id
 
-read -p "If you didn't manually format your drive, create your partitions, and set the script variables, you HAVE to do this now or this script will fail"
-
-
-# Okay the final idea is...
-# One UEFI system partition 800MB
-# Start small, don't overthink. 1TB for root. Figure out where to put the rest later
-# No experience means I don't know what is going to take up space! So don't allocate everything immediately
-
 #Scripting with sfdisk is annoying so this will be manual
 #Run these commands:
 #lsblk to check disk
@@ -64,11 +59,8 @@ echo -e "\nSettings filesystem to BTRFS\n"
 EFI="/dev/disk/by-id/nvme-eui.002538414143a0a5-part1"
 ROOT="/dev/disk/by-id/nvme-eui.002538414143a0a5-part2"
 
-ROOT="/dev/disk/by-id/nvme-eui.002538592140e412-part2"
 mkfs.vfat -F32 -n "EFI" "${EFI}"
 mkfs.btrfs -L "Root" "${ROOT}" -f
-
-echo -e "\nCreating Swap File\n"
 
 # mount target
 mount "${ROOT}" /mnt
@@ -76,11 +68,13 @@ mkdir /mnt/boot
 mkdir /mnt/boot/efi
 mount -t vfat "${EFI}" /mnt/boot/efi
 
+echo -e "\nCreating Swap File\n"
+
 btrfs subvolume create /mnt/swap
 btrfs filesystem mkswapfile --size 4g --uuid clear /mnt/swap/swapfile
 swapon /mnt/swap/swapfile
 
-read -p "filesystem done (enter)"
+#read -p "filesystem done (enter)"
 
 #Let's enable parallel downloads :3
 sed '/ParallelDownloads/s/^#//g' -o /etc/pacman.conf
@@ -90,7 +84,7 @@ echo "-- INSTALLING Arch Linux on Main Drive --"
 echo "--------------------------------------"
 pacstrap -K /mnt base linux linux-firmware intel-ucode btrfs-progs   --noconfirm --needed
 
-read -p "Main install done (enter)"
+#read -p "Main install done (enter)"
 
 echo "--------------------------------------"
 echo "-- Installing the important stuff --"
@@ -103,10 +97,9 @@ genfstab -U /mnt >> /mnt/etc/fstab
 
 cat /mnt/etc/fstab
 
-read -p "fstab done please check output(enter)"
+#read -p "fstab done please check output(enter)"
 
-#LOOK INTO THIS FOR BTRFS https://wiki.archlinux.org/title/Chroot#Using_arch-chroot
-#Timeshift on btrfs with grub-btrfs can't be beat for snappyshots :3
+#Update /etc/default/useradd config to point to /bin/zsh
 
 cat <<REALEND > /mnt/next.sh
 groupadd witches
@@ -139,6 +132,7 @@ echo "-------------------------------------------------"
 echo "Setting up grub"
 echo "-------------------------------------------------"
 pacman -S grub efibootmgr dosfstools mtools os-prober --noconfirm --needed
+#need to mount windows to see stuff
 mount /dev/disk/by-id/nvme-eui.002538592140e412-part4 /mnt/win11
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id="DemonBoot"
 sed -i 's/^#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false' /etc/default/grub
@@ -154,14 +148,42 @@ pacman -S nvidia nvidia-utils nvidia-settings --noconfirm --needed
 #Figure out how to use the systemd network thing instead of networkmanager? idk which is better
 #Do i need the bluetooth stack if I'm using USB bluetooth??
 
-systemctl --user enable pipewire pipewire-pulse
+
+pacman -S pipewire pipewire-audio pipewire-pulse pipewire-jack wireplumber --noconfirm --needed
+
+systemctl --user enable pipewire pipewire-pulse wireplumber
 # systemctl enable NetworkManager bluetooth
+
+#Setup dotfiles copnfiguration
 
 echo "-------------------------------------------------"
 echo "Install Complete, You can reboot now"
 echo "-------------------------------------------------"
 
 REALEND
+
+cat <<GIT > /mnt/git.sh
+
+echo "-------------------------------------------------"
+echo "Setup dotfiles"
+echo "-------------------------------------------------"
+
+mkdir $HOME/dotfiles
+git init --bare $HOME/dotfiles
+alias dotfiles='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME' >> $HOME/.zshrc
+source $HOME/.zshrc
+dotfiles config --local status.showUntrackedFiles no
+
+#To add stuff...
+#dotfiles add $Filename
+#dotfiles comment -m "Updating file!"
+#dotfiles push
+
+
+
+
+
+GIT
 
 
 arch-chroot /mnt sh next.sh
@@ -189,3 +211,6 @@ arch-chroot /mnt sh next.sh
 # plans: pipewire, wayland, hyprland
 # More Todo:
 # systemd-networkd config
+# set default terminal to zsh
+# Set alias for new programs (bat, fs, eza)
+#Timeshift on btrfs with grub-btrfs can't be beat for snappyshots :3
