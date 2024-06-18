@@ -174,11 +174,17 @@ echo "-------------------------------------------------"
 #https://wiki.hyprland.org/Nvidia/
 pacman -S nvidia nvidia-utils nvidia-settings lib32-nvidia-utils --noconfirm --needed
 
+
+
+
 echo "-------------------------------------------------"
 echo "Installing wayland"
 echo "-------------------------------------------------"
 
 pacman -S hyprland lightdm --noconfirm --needed
+sed -i 's/^MODULES=()/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
+mkinitcpio -P
+#Check for errors of missing nvidia headers or whatever after mkinicpio
 
 systemctl enable lightdm.service
 
