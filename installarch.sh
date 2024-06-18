@@ -186,7 +186,7 @@ echo "-------------------------------------------------"
 echo "Setting up audio"
 echo "-------------------------------------------------"
 
-pacman -S pipewire pipewire-audio pipewire-pulse pipewire-jack wireplumber --noconfirm --needed
+pacman -S pipewire pipewire-audio pipewire-pulse wireplumber --noconfirm --needed
 systemctl --user enable pipewire pipewire-pulse wireplumber
 
 echo "-------------------------------------------------"
