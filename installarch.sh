@@ -62,6 +62,10 @@ ROOT="/dev/disk/by-id/nvme-eui.002538414143a0a5-part2"
 mkfs.vfat -F32 -n "EFI" "${EFI}"
 mkfs.btrfs -L "Root" "${ROOT}" -f
 
+# The "trick" is to mount the EFI partition to /boot/efi directory
+# in this way /boot still use btrfs filesystem and /boot/efi use vfat filesystem,
+# kernels are stored in /boot and are included in the snapshots
+# so no problems with the restores because kernel, libraries and all the system are always "synchronized" 
 # mount target
 mount "${ROOT}" /mnt
 mkdir /mnt/boot
@@ -90,7 +94,7 @@ echo "--------------------------------------"
 echo "-- Installing the important stuff --"
 echo "--------------------------------------"
 
-pacstrap -K /mnt hyfetch man htop git sudo neovim nano zsh firefox --noconfirm --needed
+pacstrap -K /mnt hyfetch man htop git sudo neovim nano zsh firefox less --noconfirm --needed
 
 # Save current mount configuration
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -135,21 +139,23 @@ echo "-------------------------------------------------"
 echo "Setting up Networking (need to fix)"
 echo "-------------------------------------------------"
 
-# cat <<EOF > /etc/systemd/network/slut.network
-# [Match]
-# Name=enp1s0
-# #NEED TO CHECK NAME AND UPDATE
+cat <<EOF > /etc/systemd/network/20-ethernet.network
+[Match]
+Name=en*
+Name=eth*
 
-# [Network]
-# Address=192.168.1.10/24
-# Gateway=192.168.1.1
-# DNS=1.1.1.1
-# EOF
+[Link]
+RequiredForOnline=routable
 
-# #To put in stuff
-# cat <<EOF > /etc/resolv.conf 
-# search home.arpa
-# EOF
+[Network]
+Address=192.168.1.10/24
+Gateway=192.168.1.1
+DNS=1.1.1.1
+EOF
+
+#set up home domain
+#following https://www.rfc-editor.org/rfc/rfc8375.html
+resolvectl domain eth0 home.arpa
 
 systemctl start systemd-networkd.service
 systemctl start systemd-resolved.service
@@ -172,21 +178,22 @@ echo "-------------------------------------------------"
 
 #Should include nvidia drivers + vulkan + Cuda + OpenCL
 #https://wiki.hyprland.org/Nvidia/
-pacman -S nvidia nvidia-utils nvidia-settings lib32-nvidia-utils --noconfirm --needed
-
-
-
+pacman -S nvidia nvidia-utils nvidia-settings lib32-nvidia-utils libva-nvidia-driver --noconfirm --needed
 
 echo "-------------------------------------------------"
-echo "Installing wayland"
+echo "Installing wayland + hyprland"
 echo "-------------------------------------------------"
 
-pacman -S hyprland lightdm --noconfirm --needed
+#Following https://wiki.hyprland.org/Nvidia/
+pacman -S egl-wayland hyprland sddm --noconfirm --needed
 sed -i 's/^MODULES=()/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
 mkinitcpio -P
 #Check for errors of missing nvidia headers or whatever after mkinicpio
 
-systemctl enable lightdm.service
+sed -i 'N;/ENVIRONMENT VARIABLES/a\\nenv = NVD_BACKEND,direct\nenv = LIBVA_DRIVER_NAME,nvidia\nenv = XDG_SESSION_TYPE,wayland\nenv = GBM_BACKEND,nvidia-drm\nenv = __GLX_VENDOR_LIBRARY_NAME,nvidia' ~/.config/hypr/hyprland.conf
+sed -i '/env = __GLX_VENDOR_LIBRARY_NAME,nvidia/a\\ncursor {\n    no_hardware_cursors = true\n}' ~/.config/hypr/hyprland.conf
+
+systemctl enable sddm.service
 
 echo "-------------------------------------------------"
 echo "Setting up audio"
@@ -222,14 +229,12 @@ dotfiles config --local status.showUntrackedFiles no
 #dotfiles comment -m "Updating file!"
 #dotfiles push
 
-
 GIT
 
 
 arch-chroot /mnt sh next.sh
 
 
-# How do i do that exactly? Some youtube guides mention editing /etc/mkinitcpio.conf and adding nvidia_drm there, but what does "set modeset and fbdev FOR nvidia_drm" mean?
 
 # How do i set those parameters for the nvidia_drm module? It's not exactly clear on that. It does link to another kernel module page, but there it says i need to make a file in /etc/modprobe.d/myfilename.conf (i assume naming it nvidia.conf) with options module_name parameter_name=parameter_value.
 
