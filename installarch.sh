@@ -160,6 +160,13 @@ resolvectl domain eth0 home.arpa
 systemctl start systemd-networkd.service
 systemctl start systemd-resolved.service
 
+echo "-------------------------------------------------"
+echo "Installing display Drivers"
+echo "-------------------------------------------------"
+
+#Should include nvidia drivers + vulkan + Cuda + OpenCL
+#https://wiki.hyprland.org/Nvidia/
+pacman -S nvidia nvidia-utils nvidia-settings lib32-nvidia-utils libva-nvidia-driver --noconfirm --needed
 
 echo "-------------------------------------------------"
 echo "Setting up grub"
@@ -172,13 +179,6 @@ sed -i 's/^#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' /etc/def
 sed -i '/.*^GRUB_CMDLINE_LINUX_DEFAULT=.*/ c\GRUB_CMDLINE_LINUX_DEFAULT="quiet loglevel=3 nvidia_drm.modeset=1/"' /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
-echo "-------------------------------------------------"
-echo "Installing display Drivers"
-echo "-------------------------------------------------"
-
-#Should include nvidia drivers + vulkan + Cuda + OpenCL
-#https://wiki.hyprland.org/Nvidia/
-pacman -S nvidia nvidia-utils nvidia-settings lib32-nvidia-utils libva-nvidia-driver --noconfirm --needed
 
 echo "-------------------------------------------------"
 echo "Installing wayland + hyprland"
