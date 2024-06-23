@@ -11,11 +11,11 @@ mv configarch.sh /mnt/configarch.sh
 mv installgit.sh /mnt/installgit.sh
 
 #Customize the OS!
-arch-chroot /mnt configarch.sh
+arch-chroot /mnt sh configarch.sh
 
 #Copying over basic config stuff needed for nvidia support
 mkdir -p /mnt/home/lilith/.config/hypr/
 mv /config/hyprland.conf /mnt/home/lilith/.config/hypr/hyprland.conf
 
 #Get dotfiles sync support up
-arch-chroot /mnt /installgit.sh
+arch-chroot /mnt sh /installgit.sh
