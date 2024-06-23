@@ -58,8 +58,12 @@ echo -e "\nSettings filesystem to BTRFS\n"
 EFI="/dev/disk/by-id/nvme-eui.002538414143a0a5-part1"
 ROOT="/dev/disk/by-id/nvme-eui.002538414143a0a5-part2"
 
-mkfs.vfat -F32 -n "EFI" "${EFI}"
+mkfs.vfat -F32 -n "EFI" "${EFI}" -f
 mkfs.btrfs -L "Root" "${ROOT}" -f
+
+#Unmount if already mounted (eg runnning script twice)
+umount /mnt/boot/efi
+umount /mnt
 
 # The "trick" is to mount the EFI partition to /boot/efi directory
 # in this way /boot still use btrfs filesystem and /boot/efi use vfat filesystem,
