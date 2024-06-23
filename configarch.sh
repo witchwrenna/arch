@@ -89,7 +89,7 @@ efibootmgr --create --disk /dev/disk/by-id/nvme-eui.002538414143a0a5 --part 1 --
 cp -r /usr/share/refind/icons /boot/efi/EFI/refind/
 
 #create $UUID from fstab because UUID changes after mkfs
-read uuid <<< $(cat /etc/fstab | grep -A1 Root | grep UUID | awk -v col=1 '{print $col}')
+read UUID <<< $(cat /etc/fstab | grep -A1 Root | grep UUID | awk -v col=1 '{print $col}')
 
 echo "grabbed UUID $UUID"
 read -p "press enter to continue"
