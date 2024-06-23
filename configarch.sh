@@ -49,10 +49,10 @@ Gateway=192.168.1.1
 DNS=1.1.1.1
 EOF
 
+sed -i 's/^#Domains=/Domains=home.arpa/' /etc/systemd/resolved.conf
+
 #set up home domain
 #following https://www.rfc-editor.org/rfc/rfc8375.html
-resolvectl domain eth0 home.arpa
-
 systemctl enable systemd-networkd.service 
 systemctl enable systemd-resolved.service 
 
