@@ -119,15 +119,6 @@ menuentry "Arch Linux" {
 }
 STANZA
 
-read -p "press enter to continue"
-
-#The default entry is based on the current /proc/cmdline. 
-#The default entry is based on the current /proc/cmdline. 
-#The default entry is based on the current /proc/cmdline. 
-#The default entry is based on the current /proc/cmdline. 
-#The default entry is based on the current /proc/cmdline. 
-#The default entry is based on the current /proc/cmdline. 
-
 echo "-------------------------------------------------"
 echo "Installing wayland + hyprland"
 echo "-------------------------------------------------"
