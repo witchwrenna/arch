@@ -19,6 +19,8 @@ echo "LANG=en_US.UTF-8" >> /etc/locale.conf
 ln -sf /usr/share/zoneinfo/US/Eastern /etc/localtime
 hwclock --systohc
 
+read "pausing... press enter to continue"
+
 echo "-------------------------------------------------"
 echo "Setting up network loopback"
 echo "-------------------------------------------------"
@@ -54,6 +56,8 @@ resolvectl domain eth0 home.arpa
 systemctl enable systemd-networkd.service --now
 systemctl enable systemd-resolved.service --now
 
+read "pausing... press enter to continue"
+
 echo "-------------------------------------------------"
 echo "Installing display Drivers"
 echo "-------------------------------------------------"
@@ -61,6 +65,8 @@ echo "-------------------------------------------------"
 #Should include nvidia drivers + vulkan + Cuda + OpenCL
 #https://wiki.hyprland.org/Nvidia/
 pacman -S nvidia nvidia-utils nvidia-settings lib32-nvidia-utils libva-nvidia-driver --noconfirm --needed
+
+read "pausing... press enter to continue"
 
 echo "-------------------------------------------------"
 echo "Setting up grub"
@@ -93,12 +99,16 @@ mkinitcpio -P
 
 systemctl enable sddm.service
 
+read "pausing... press enter to continue"
+
 echo "-------------------------------------------------"
 echo "Setting up audio"
 echo "-------------------------------------------------"
 
 pacman -S pipewire pipewire-audio pipewire-pulse wireplumber --noconfirm --needed
 systemctl --user enable pipewire pipewire-pulse wireplumber
+
+read "pausing... press enter to continue"
 
 echo "--------------------------------------"
 echo "-- Installing the important stuff --"
