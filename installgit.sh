@@ -4,14 +4,14 @@ echo "-------------------------------------------------"
 echo "Setup git and dotfiles"
 echo "-------------------------------------------------"
 
-mkdir $HOME/dotfiles
+mkdir /home/lilith/dotfiles
 
 git config --global user.name "Witch Wrenna"
 git config --global user.email witchwrenna@gmail.com
 
-git init --bare $HOME/dotfiles
-alias dotfiles='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME' >> $HOME/.zshrc
-source $HOME/.zshrc
+git init --bare /home/lilith/dotfiles
+alias dotfiles='/usr/bin/git --git-dir=/home/lilith/dotfiles/ --work-tree=/home/lilith' >> /home/lilith/.zshrc
+source /home/lilith/.zshrc
 dotfiles config --local status.showUntrackedFiles no
 
 #To add stuff...
