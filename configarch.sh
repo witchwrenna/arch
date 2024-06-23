@@ -69,34 +69,34 @@ pacman -S nvidia nvidia-utils nvidia-settings libva-nvidia-driver --noconfirm --
 # read -p "pausing... press enter to continue"
 
 echo "-------------------------------------------------"
-echo "Setting up grub"
+echo "Setting up REFIND"
 echo "-------------------------------------------------"
-pacman -S grub efibootmgr dosfstools mtools os-prober --noconfirm --needed
-#need to mount windows to see stuff
-mount /dev/disk/by-id/nvme-eui.002538592140e412-part2 /mnt/win11
-grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id="DemonBoot"
-sed -i 's/^#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' /etc/default/grub
-sed -i '/.*^GRUB_CMDLINE_LINUX_DEFAULT=.*/ c\GRUB_CMDLINE_LINUX_DEFAULT="quiet loglevel=3 nvidia_drm.modeset=1/"' /etc/default/grub
-grub-mkconfig -o /boot/grub/grub.cfg
+# pacman -S grub efibootmgr dosfstools mtools os-prober --noconfirm --needed
+# #need to mount windows to see stuff
+# mount /dev/disk/by-id/nvme-eui.002538592140e412-part2 /mnt/win11
+# grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id="DemonBoot"
+# sed -i 's/^#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' /etc/default/grub
+# sed -i '/.*^GRUB_CMDLINE_LINUX_DEFAULT=.*/ c\GRUB_CMDLINE_LINUX_DEFAULT="quiet loglevel=3 nvidia_drm.modeset=1/"' /etc/default/grub
+# grub-mkconfig -o /boot/grub/grub.cfg
 
 # read -p "trying out refind press enter"
 
-# pacman -S refind efibootmgr --noconfirm --needed
+pacman -S refind efibootmgr --noconfirm --needed
 
-# mkdir -p /boot/efi/EFI/refind
-# cp /usr/share/refind/refind_x64.efi /boot/efi/EFI/refind/
-# efibootmgr --create --disk /dev/disk/by-id/nvme-eui.002538414143a0a5 --part 1 --loader /EFI/refind/refind_x64.efi --label "DemonBoot" --unicode
-# cp -r /usr/share/refind/icons /boot/efi/EFI/refind/
+mkdir -p /boot/efi/EFI/refind
+cp /usr/share/refind/refind_x64.efi /boot/efi/EFI/refind/
+efibootmgr --create --disk /dev/disk/by-id/nvme-eui.002538414143a0a5 --part 1 --loader /EFI/refind/refind_x64.efi --label "DemonBoot" --unicode
+cp -r /usr/share/refind/icons /boot/efi/EFI/refind/
 
 #create $UUID from fstab because UUID changes after mkfs
 #This is like running . source on the first column containing a UUID
- cat /etc/fstab | grep -A1 Root | grep UUID | awk -v col=1 '{print $col}' | source /dev/stdin
+cat /etc/fstab | grep -A1 Root | grep UUID | awk -v col=1 '{print $col}' | source /dev/stdin
 
-# cat <<BOOT > /boot/refind_linux.conf
-# "Boot using default options"     "root=PARTUUID=$UUID rw loglevel=3 quiet nvidia_drm.modeset=1"
-# "Boot using fallback initramfs"  "root=PARTUUID=$UUID rw initrd=boot\initramfs-%v-fallback.img"
-# "Boot to terminal"               "root=PARTUUID=$UUID rw systemd.unit=multi-user.target"
-# BOOT
+cat <<BOOT > /boot/refind_linux.conf
+"Boot using default options"     "root=PARTUUID=$UUID rw loglevel=3 quiet nvidia_drm.modeset=1"
+"Boot using fallback initramfs"  "root=PARTUUID=$UUID rw initrd=boot\initramfs-%v-fallback.img"
+"Boot to terminal"               "root=PARTUUID=$UUID rw systemd.unit=multi-user.target"
+BOOT
 
 cp /usr/share/refind/refind.conf-sample /boot/efi/EFI/refind/refind.conf
 sed -i '/extra_kernel_version_strings/s/^#//g' /boot/efi/EFI/refind/refind.conf
@@ -107,7 +107,7 @@ menuentry "Arch Linux" {
 	volume   "Arch Linux"
 	loader   /boot/vmlinuz-linux
 	initrd   /boot/initramfs-linux.img
-	options  "root=$UUID rw loglevel=3 quiet nvidia_drm.modeset=1"
+	options  "root=PARTUUID=$UUID rw loglevel=3 quiet nvidia_drm.modeset=1"
 	submenuentry "Boot using fallback initramfs" {
 		initrd /boot/initramfs-linux-fallback.img
 	}
