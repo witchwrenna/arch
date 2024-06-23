@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-wget -P ~/ https://github.com/witchwrenna/arch/archive/master.zip
-unzip ~/master.zip
+curl -LO https://github.com/witchwrenna/arch/archive/master.zip
+gunzip ~/master.zip
 mv ~/*-master ~/dir-name
 
 bash ~/archinstall
