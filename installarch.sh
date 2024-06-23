@@ -85,7 +85,7 @@ sed '/ParallelDownloads/s/^#//g' -o /etc/pacman.conf
 echo "--------------------------------------"
 echo "-- INSTALLING Arch Linux on Main Drive --"
 echo "--------------------------------------"
-pacstrap -K /mnt base linux linux-firmware linux-headers intel-ucode btrfs-progs zsh --noconfirm --needed
+pacstrap -K /mnt base linux linux-firmware linux-headers intel-ucode btrfs-progs zsh sudo --noconfirm --needed
 
 #read -p "Main install done (enter)"
 

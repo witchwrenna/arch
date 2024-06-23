@@ -7,7 +7,7 @@ echo lilith:lilith | chpasswd
 sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
 
 #Let's enable parallel downloads :3
-sed '/ParallelDownloads/s/^#//g' -o /etc/pacman.conf
+sed -i '/ParallelDownloads/s/^#//g' /etc/pacman.conf
 
 echo "-------------------------------------------------"
 echo "Setup Language to US and set locale"
