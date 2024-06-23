@@ -136,7 +136,7 @@ cat <<EOF > /etc/hosts
 EOF
 
 echo "-------------------------------------------------"
-echo "Setting up Networking (need to fix)"
+echo "Setting up Networking"
 echo "-------------------------------------------------"
 
 cat <<EOF > /etc/systemd/network/20-ethernet.network
@@ -157,8 +157,8 @@ EOF
 #following https://www.rfc-editor.org/rfc/rfc8375.html
 resolvectl domain eth0 home.arpa
 
-systemctl start systemd-networkd.service
-systemctl start systemd-resolved.service
+systemctl enable systemd-networkd.service
+systemctl enable systemd-resolved.service
 
 echo "-------------------------------------------------"
 echo "Installing display Drivers"
