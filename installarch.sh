@@ -80,7 +80,7 @@ swapon /mnt/swap/swapfile
 #read -p "filesystem done (enter)"
 
 #Let's enable parallel downloads :3
-sed -i '/ParallelDownloads/s/^#//g' /etc/pacman.conf
+sed -i 's/#ParallelDownloads.*/ParallelDownloads=10/' /etc/pacman.conf
 
 echo "--------------------------------------"
 echo "-- INSTALLING Arch Linux on Main Drive --"

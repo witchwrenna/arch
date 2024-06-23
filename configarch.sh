@@ -7,7 +7,7 @@ echo lilith:lilith | chpasswd
 sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
 
 #Let's enable parallel downloads :3
-sed -i '/ParallelDownloads/s/^#//g' /etc/pacman.conf
+sed -i 's/#ParallelDownloads.*/ParallelDownloads=10/' /etc/pacman.conf
 
 echo "-------------------------------------------------"
 echo "Setup Language to US and set locale"
@@ -96,7 +96,7 @@ echo "grabbed UUID $UUID"
 read -p "press enter to continue"
 
 cat <<BOOT > /boot/refind_linux.conf
-"Boot using default options"     "root=PARTUUID=$UUID rw loglevel=3 quiet nvidia_drm.modeset=1"
+"Boot using default options"     "root=UUID=$UUID rw loglevel=3 quiet nvidia_drm.modeset=1"
 "Boot using fallback initramfs"  "root=PARTUUID=$UUID rw initrd=boot\initramfs-%v-fallback.img"
 "Boot to terminal"               "root=PARTUUID=$UUID rw systemd.unit=multi-user.target"
 BOOT
