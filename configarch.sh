@@ -85,6 +85,9 @@ pacman -S refind efibootmgr --noconfirm --needed
 
 mkdir -p /boot/efi/EFI/refind
 cp /usr/share/refind/refind_x64.efi /boot/efi/EFI/refind/
+mkdir -p /boot/efi/EFI/refind/drivers_x64
+cp /usr/share/refind/drivers_x64/btrfs_x64.efi /boot/efi/EFI/refind/drivers_x64/
+
 efibootmgr --create --disk /dev/disk/by-id/nvme-eui.002538414143a0a5 --part 1 --loader /EFI/refind/refind_x64.efi --label "DemonBoot" --unicode
 cp -r /usr/share/refind/icons /boot/efi/EFI/refind/
 
