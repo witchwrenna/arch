@@ -19,6 +19,8 @@ echo "LANG=en_US.UTF-8" >> /etc/locale.conf
 ln -sf /usr/share/zoneinfo/US/Eastern /etc/localtime
 hwclock --systohc
 
+read "pausing... press enter to continue"
+
 echo "-------------------------------------------------"
 echo "Setting up network loopback"
 echo "-------------------------------------------------"
@@ -54,6 +56,8 @@ resolvectl domain eth0 home.arpa
 systemctl enable systemd-networkd.service --now
 systemctl enable systemd-resolved.service --now
 
+read "pausing... press enter to continue"
+
 echo "-------------------------------------------------"
 echo "Installing display Drivers"
 echo "-------------------------------------------------"
@@ -62,17 +66,25 @@ echo "-------------------------------------------------"
 #https://wiki.hyprland.org/Nvidia/
 pacman -S nvidia nvidia-utils nvidia-settings lib32-nvidia-utils libva-nvidia-driver --noconfirm --needed
 
+read "pausing... press enter to continue"
+
 echo "-------------------------------------------------"
 echo "Setting up grub"
 echo "-------------------------------------------------"
-pacman -S grub efibootmgr dosfstools mtools os-prober --noconfirm --needed
-#need to mount windows to see stuff
-mount /dev/disk/by-id/nvme-eui.002538592140e412-part2 /mnt/win11
-grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id="DemonBoot"
-sed -i 's/^#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' /etc/default/grub
-sed -i '/.*^GRUB_CMDLINE_LINUX_DEFAULT=.*/ c\GRUB_CMDLINE_LINUX_DEFAULT="quiet loglevel=3 nvidia_drm.modeset=1/"' /etc/default/grub
-grub-mkconfig -o /boot/grub/grub.cfg
+# pacman -S grub efibootmgr dosfstools mtools os-prober --noconfirm --needed
+# #need to mount windows to see stuff
+# mount /dev/disk/by-id/nvme-eui.002538592140e412-part2 /mnt/win11
+# grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id="DemonBoot"
+# sed -i 's/^#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' /etc/default/grub
+# sed -i '/.*^GRUB_CMDLINE_LINUX_DEFAULT=.*/ c\GRUB_CMDLINE_LINUX_DEFAULT="quiet loglevel=3 nvidia_drm.modeset=1/"' /etc/default/grub
+# grub-mkconfig -o /boot/grub/grub.cfg
 
+read "trying out refind press enter"
+
+pacman -S refind efibootmgr refind-install
+refind-install
+
+read "press enter to continue"
 
 echo "-------------------------------------------------"
 echo "Installing wayland + hyprland"
@@ -81,10 +93,13 @@ echo "-------------------------------------------------"
 #Following https://wiki.hyprland.org/Nvidia/
 pacman -S egl-wayland hyprland sddm --noconfirm --needed
 sed -i 's/^MODULES=()/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
+echo "options nvidia_drm modeset=1 fbdev=1" > /etc/modprobe.d/nvidia.conf
 mkinitcpio -P
 #Check for errors of missing nvidia headers or whatever after mkinicpio
 
 systemctl enable sddm.service
+
+read "pausing... press enter to continue"
 
 echo "-------------------------------------------------"
 echo "Setting up audio"
@@ -92,6 +107,8 @@ echo "-------------------------------------------------"
 
 pacman -S pipewire pipewire-audio pipewire-pulse wireplumber --noconfirm --needed
 systemctl --user enable pipewire pipewire-pulse wireplumber
+
+read "pausing... press enter to continue"
 
 echo "--------------------------------------"
 echo "-- Installing the important stuff --"
