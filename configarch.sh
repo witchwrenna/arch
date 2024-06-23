@@ -95,9 +95,9 @@ echo "grabbed UUID $UUID"
 read -p "press enter to continue"
 
 cat <<BOOT > /boot/refind_linux.conf
-"Boot using default options"     "root=UUID=$UUID rw loglevel=3 quiet nvidia_drm.modeset=1"
-"Boot using fallback initramfs"  "root=UUID=$UUID rw initrd=boot\initramfs-%v-fallback.img"
-"Boot to terminal"               "root=UUID=$UUID rw systemd.unit=multi-user.target"
+"Boot using default options"     "root=$UUID rw loglevel=3 quiet nvidia_drm.modeset=1"
+"Boot using fallback initramfs"  "root=$UUID rw initrd=boot\initramfs-%v-fallback.img"
+"Boot to terminal"               "root=$UUID rw systemd.unit=multi-user.target"
 BOOT
 
 cp /usr/share/refind/refind.conf-sample /boot/efi/EFI/refind/refind.conf
