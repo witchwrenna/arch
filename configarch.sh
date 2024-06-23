@@ -19,7 +19,7 @@ echo "LANG=en_US.UTF-8" >> /etc/locale.conf
 ln -sf /usr/share/zoneinfo/US/Eastern /etc/localtime
 hwclock --systohc
 
-read "pausing... press enter to continue"
+read -p "pausing... press enter to continue"
 
 echo "-------------------------------------------------"
 echo "Setting up network loopback"
@@ -56,7 +56,7 @@ resolvectl domain eth0 home.arpa
 systemctl enable systemd-networkd.service --now
 systemctl enable systemd-resolved.service --now
 
-read "pausing... press enter to continue"
+read -p "pausing... press enter to continue"
 
 echo "-------------------------------------------------"
 echo "Installing display Drivers"
@@ -66,7 +66,7 @@ echo "-------------------------------------------------"
 #https://wiki.hyprland.org/Nvidia/
 pacman -S nvidia nvidia-utils nvidia-settings lib32-nvidia-utils libva-nvidia-driver --noconfirm --needed
 
-read "pausing... press enter to continue"
+read -p "pausing... press enter to continue"
 
 echo "-------------------------------------------------"
 echo "Setting up grub"
@@ -79,12 +79,12 @@ echo "-------------------------------------------------"
 # sed -i '/.*^GRUB_CMDLINE_LINUX_DEFAULT=.*/ c\GRUB_CMDLINE_LINUX_DEFAULT="quiet loglevel=3 nvidia_drm.modeset=1/"' /etc/default/grub
 # grub-mkconfig -o /boot/grub/grub.cfg
 
-read "trying out refind press enter"
+read -p "trying out refind press enter"
 
 pacman -S refind efibootmgr refind-install
 refind-install
 
-read "press enter to continue"
+read -p "press enter to continue"
 
 echo "-------------------------------------------------"
 echo "Installing wayland + hyprland"
@@ -99,7 +99,7 @@ mkinitcpio -P
 
 systemctl enable sddm.service
 
-read "pausing... press enter to continue"
+read -p "pausing... press enter to continue"
 
 echo "-------------------------------------------------"
 echo "Setting up audio"
@@ -108,7 +108,7 @@ echo "-------------------------------------------------"
 pacman -S pipewire pipewire-audio pipewire-pulse wireplumber --noconfirm --needed
 systemctl --user enable pipewire pipewire-pulse wireplumber
 
-read "pausing... press enter to continue"
+read -p "pausing... press enter to continue"
 
 echo "--------------------------------------"
 echo "-- Installing the important stuff --"
