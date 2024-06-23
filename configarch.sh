@@ -67,7 +67,7 @@ echo "Setting up grub"
 echo "-------------------------------------------------"
 pacman -S grub efibootmgr dosfstools mtools os-prober --noconfirm --needed
 #need to mount windows to see stuff
-mount /dev/disk/by-id/nvme-eui.002538592140e412-part4 /mnt/win11
+mount /dev/disk/by-id/nvme-eui.002538592140e412-part2 /mnt/win11
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id="DemonBoot"
 sed -i 's/^#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' /etc/default/grub
 sed -i '/.*^GRUB_CMDLINE_LINUX_DEFAULT=.*/ c\GRUB_CMDLINE_LINUX_DEFAULT="quiet loglevel=3 nvidia_drm.modeset=1/"' /etc/default/grub
