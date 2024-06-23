@@ -102,19 +102,10 @@ cat /mnt/etc/fstab
 
 #read -p "fstab done please check output(enter)"
 
-#Update /etc/default/useradd config to point to /bin/zsh
-
-
-# How do i set those parameters for the nvidia_drm module? It's not exactly clear on that. It does link to another kernel module page, but there it says i need to make a file in /etc/modprobe.d/myfilename.conf (i assume naming it nvidia.conf) with options module_name parameter_name=parameter_value.
-
-# If i understood this correctly, i make a file named nvidia.conf in /etc/modprobe.d/ and in that file i write:
-
-# options nvidia_drm modeset=1 fbdev=1 
-
 # todo: 
-# pipeware
-# nvidia
-# wayland+hyprland
+# Update /etc/default/useradd config to point to /bin/zsh
+# verify pipeware
+# get wayland+hyprland working (nvidia issues?)
 # rice the login manager
 # set up plymouth? look into alternatives too
 # https://wiki.archlinux.org/title/Category:Eye_candy
