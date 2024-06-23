@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-#curl -L https://shorturl.at/sB0AX > main.sh
-#sh main.sh
 
 echo "-------------------------------------------------"
 echo "Setup git and dotfiles"

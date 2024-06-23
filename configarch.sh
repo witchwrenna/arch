@@ -92,6 +92,9 @@ cp -r /usr/share/refind/icons /boot/efi/EFI/refind/
 #This is like running . source on the first column containing a UUID
 cat /etc/fstab | grep -A1 Root | grep UUID | awk -v col=1 '{print $col}' | source /dev/stdin
 
+echo "grabbed UUID $UUID"
+read -p "press enter to continue"
+
 cat <<BOOT > /boot/refind_linux.conf
 "Boot using default options"     "root=PARTUUID=$UUID rw loglevel=3 quiet nvidia_drm.modeset=1"
 "Boot using fallback initramfs"  "root=PARTUUID=$UUID rw initrd=boot\initramfs-%v-fallback.img"
