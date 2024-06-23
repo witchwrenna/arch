@@ -96,8 +96,8 @@ read -p "press enter to continue"
 
 cat <<BOOT > /boot/refind_linux.conf
 "Boot using default options"     "root=UUID=$UUID rw loglevel=3 quiet nvidia_drm.modeset=1"
-"Boot using fallback initramfs"  "root=PARTUUID=$UUID rw initrd=boot\initramfs-%v-fallback.img"
-"Boot to terminal"               "root=PARTUUID=$UUID rw systemd.unit=multi-user.target"
+"Boot using fallback initramfs"  "root=UUID=$UUID rw initrd=boot\initramfs-%v-fallback.img"
+"Boot to terminal"               "root=UUID=$UUID rw systemd.unit=multi-user.target"
 BOOT
 
 cp /usr/share/refind/refind.conf-sample /boot/efi/EFI/refind/refind.conf
@@ -109,7 +109,7 @@ menuentry "Arch Linux" {
 	volume   "Arch Linux"
 	loader   /boot/vmlinuz-linux
 	initrd   /boot/initramfs-linux.img
-	options  "root=PARTUUID=$UUID rw loglevel=3 quiet nvidia_drm.modeset=1"
+	options  "root=UUID=$UUID rw loglevel=3 quiet nvidia_drm.modeset=1"
 	submenuentry "Boot using fallback initramfs" {
 		initrd /boot/initramfs-linux-fallback.img
 	}
