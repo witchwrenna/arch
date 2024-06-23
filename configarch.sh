@@ -88,14 +88,34 @@ grub-mkconfig -o /boot/grub/grub.cfg
 # efibootmgr --create --disk /dev/disk/by-id/nvme-eui.002538414143a0a5 --part 1 --loader /EFI/refind/refind_x64.efi --label "DemonBoot" --unicode
 # cp -r /usr/share/refind/icons /boot/efi/EFI/refind/
 
+#create $UUID from fstab because UUID changes after mkfs
+#This is like running . source on the first column containing a UUID
+ cat /etc/fstab | grep -A1 Root | grep UUID | awk -v col=1 '{print $col}' | source /dev/stdin
+
 # cat <<BOOT > /boot/refind_linux.conf
-# "Boot using default options"     "root=PARTUUID=bd560726-ab1d-4cc7-8201-b04dfa33e4a5 rw add_efi_memmap nvidia_drm.modeset=1"
-# "Boot using fallback initramfs"  "root=PARTUUID=bd560726-ab1d-4cc7-8201-b04dfa33e4a5 rw add_efi_memmap initrd=boot\initramfs-%v-fallback.img"
-# "Boot to terminal"               "root=PARTUUID=bd560726-ab1d-4cc7-8201-b04dfa33e4a5 rw add_efi_memmap systemd.unit=multi-user.target"
+# "Boot using default options"     "root=PARTUUID=$UUID rw loglevel=3 quiet nvidia_drm.modeset=1"
+# "Boot using fallback initramfs"  "root=PARTUUID=$UUID rw initrd=boot\initramfs-%v-fallback.img"
+# "Boot to terminal"               "root=PARTUUID=$UUID rw systemd.unit=multi-user.target"
 # BOOT
 
-# cp /usr/share/refind/refind.conf-sample /boot/efi/EFI/refind/refind.conf
-# sed -i '/extra_kernel_version_strings/s/^#//g' /boot/efi/EFI/refind/refind.conf
+cp /usr/share/refind/refind.conf-sample /boot/efi/EFI/refind/refind.conf
+sed -i '/extra_kernel_version_strings/s/^#//g' /boot/efi/EFI/refind/refind.conf
+
+cat <<STANZA >> /boot/efi/EFI/refind/refind.conf
+menuentry "Arch Linux" {
+	icon     /EFI/refind/icons/os_arch.png
+	volume   "Arch Linux"
+	loader   /boot/vmlinuz-linux
+	initrd   /boot/initramfs-linux.img
+	options  "root=$UUID rw loglevel=3 quiet nvidia_drm.modeset=1"
+	submenuentry "Boot using fallback initramfs" {
+		initrd /boot/initramfs-linux-fallback.img
+	}
+	submenuentry "Boot to terminal" {
+		add_options "systemd.unit=multi-user.target"
+	}
+}
+STANZA
 
 read -p "press enter to continue"
 
