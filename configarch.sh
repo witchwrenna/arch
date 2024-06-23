@@ -94,6 +94,7 @@ cat <<BOOT > /boot/refind_linux.conf
 "Boot to terminal"               "root=PARTUUID=bd560726-ab1d-4cc7-8201-b04dfa33e4a5 rw add_efi_memmap systemd.unit=multi-user.target"
 BOOT
 
+cp /usr/share/refind/refind.conf-sample /boot/efi/refind/refind.conf
 sed -i '/extra_kernel_version_strings/s/^#//g' /boot/efi/EFI/refind/refind.conf
 
 read -p "press enter to continue"
