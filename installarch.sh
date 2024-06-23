@@ -63,7 +63,7 @@ swapoff /mnt/swap/swapfile
 umount /mnt/boot/efi
 umount /mnt
 
-mkfs.vfat -F32 -n "EFI" -f "${EFI}"
+mkfs.vfat -F32 -n "EFI" "${EFI}"
 mkfs.btrfs -L "Root" -f "${ROOT}"
 
 # The idea is to mount the EFI partition to /boot/efi directory
