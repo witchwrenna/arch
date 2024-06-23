@@ -2,7 +2,7 @@
 
 curl -LO https://github.com/witchwrenna/arch/archive/master.zip
 pacman -Sy unzip --noconfirm --needed
-unzip ~/master.zip
+unzip ~/master.zip -o
 sh arch-main/installarch.sh
 
 #Copy over scripts to prepare for chroot
