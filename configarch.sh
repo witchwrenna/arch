@@ -106,7 +106,7 @@ sed -i '/extra_kernel_version_strings/s/^#//g' /boot/efi/EFI/refind/refind.conf
 cat <<STANZA >> /boot/efi/EFI/refind/refind.conf
 menuentry "Arch Linux" {
 	icon     /EFI/refind/icons/os_arch.png
-	volume   "Arch Linux"
+	volume   "Root"
 	loader   /boot/vmlinuz-linux
 	initrd   /boot/initramfs-linux.img
 	options  "root=UUID=$UUID rw loglevel=3 quiet nvidia_drm.modeset=1"
