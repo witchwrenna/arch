@@ -58,8 +58,8 @@ echo -e "\nSettings filesystem to BTRFS\n"
 EFI="/dev/disk/by-id/nvme-eui.002538414143a0a5-part1"
 ROOT="/dev/disk/by-id/nvme-eui.002538414143a0a5-part2"
 
-mkfs.vfat -F32 -n "EFI" "${EFI}"
-mkfs.btrfs -L "Root" "${ROOT}"
+mkfs.vfat -F32 -n -f "EFI" "${EFI}"
+mkfs.btrfs -L -f "Root" "${ROOT}"
 
 #Unmount if already mounted (eg runnning script twice)
 umount /mnt/boot/efi
