@@ -64,7 +64,7 @@ echo "-------------------------------------------------"
 
 #Should include nvidia drivers + vulkan + Cuda + OpenCL
 #https://wiki.hyprland.org/Nvidia/
-pacman -S nvidia nvidia-utils nvidia-settings lib32-nvidia-utils libva-nvidia-driver --noconfirm --needed
+pacman -S nvidia nvidia-utils nvidia-settings libva-nvidia-driver --noconfirm --needed
 
 read -p "pausing... press enter to continue"
 
@@ -81,7 +81,7 @@ echo "-------------------------------------------------"
 
 read -p "trying out refind press enter"
 
-pacman -S refind efibootmgr refind-install
+pacman -S refind efibootmgr refind-install --noconfirm --needed
 refind-install
 
 read -p "press enter to continue"
