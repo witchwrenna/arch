@@ -81,7 +81,7 @@ echo "-------------------------------------------------"
 
 read -p "trying out refind press enter"
 
-pacman -S refind efibootmgr refind-install --noconfirm --needed
+pacman -S refind efibootmgr --noconfirm --needed
 refind-install
 
 read -p "press enter to continue"
