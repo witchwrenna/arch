@@ -76,6 +76,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 
 pacman -S refind efibootmgr refind-install
+refind-install
 
 echo "-------------------------------------------------"
 echo "Installing wayland + hyprland"
