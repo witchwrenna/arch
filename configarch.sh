@@ -84,9 +84,6 @@ sed -i 's/^MODULES=()/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /e
 mkinitcpio -P
 #Check for errors of missing nvidia headers or whatever after mkinicpio
 
-sed -i 'N;/ENVIRONMENT VARIABLES/a\\nenv = NVD_BACKEND,direct\nenv = LIBVA_DRIVER_NAME,nvidia\nenv = XDG_SESSION_TYPE,wayland\nenv = GBM_BACKEND,nvidia-drm\nenv = __GLX_VENDOR_LIBRARY_NAME,nvidia' ~/.config/hypr/hyprland.conf
-sed -i '/env = __GLX_VENDOR_LIBRARY_NAME,nvidia/a\\ncursor {\n    no_hardware_cursors = true\n}' ~/.config/hypr/hyprland.conf
-
 systemctl enable sddm.service
 
 echo "-------------------------------------------------"
