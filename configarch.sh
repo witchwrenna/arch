@@ -93,6 +93,12 @@ echo "-------------------------------------------------"
 pacman -S pipewire pipewire-audio pipewire-pulse wireplumber --noconfirm --needed
 systemctl --user enable pipewire pipewire-pulse wireplumber
 
+echo "--------------------------------------"
+echo "-- Installing the important stuff --"
+echo "--------------------------------------"
+
+pacman -S hyfetch man htop git sudo neovim nano firefox less --noconfirm --needed
+
 echo "-------------------------------------------------"
 echo "Install Complete, You can reboot now"
 echo "-------------------------------------------------"

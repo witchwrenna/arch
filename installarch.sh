@@ -85,15 +85,11 @@ sed '/ParallelDownloads/s/^#//g' -o /etc/pacman.conf
 echo "--------------------------------------"
 echo "-- INSTALLING Arch Linux on Main Drive --"
 echo "--------------------------------------"
-pacstrap -K /mnt base linux linux-firmware linux-headers intel-ucode btrfs-progs   --noconfirm --needed
+pacstrap -K /mnt base linux linux-firmware linux-headers intel-ucode btrfs-progs zsh --noconfirm --needed
 
 #read -p "Main install done (enter)"
 
-echo "--------------------------------------"
-echo "-- Installing the important stuff --"
-echo "--------------------------------------"
 
-pacstrap -K /mnt hyfetch man htop git sudo neovim nano zsh firefox less --noconfirm --needed
 
 # Save current mount configuration
 genfstab -U /mnt >> /mnt/etc/fstab
