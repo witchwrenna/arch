@@ -74,6 +74,9 @@ sed -i '/.*^GRUB_CMDLINE_LINUX_DEFAULT=.*/ c\GRUB_CMDLINE_LINUX_DEFAULT="quiet l
 grub-mkconfig -o /boot/grub/grub.cfg
 
 
+
+pacman -S refind efibootmgr refind-install
+
 echo "-------------------------------------------------"
 echo "Installing wayland + hyprland"
 echo "-------------------------------------------------"
@@ -81,6 +84,7 @@ echo "-------------------------------------------------"
 #Following https://wiki.hyprland.org/Nvidia/
 pacman -S egl-wayland hyprland sddm --noconfirm --needed
 sed -i 's/^MODULES=()/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
+echo "options nvidia_drm modeset=1 fbdev=1" > /etc/modprobe.d/nvidia.conf
 mkinitcpio -P
 #Check for errors of missing nvidia headers or whatever after mkinicpio
 
