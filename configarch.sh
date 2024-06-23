@@ -53,8 +53,8 @@ EOF
 #following https://www.rfc-editor.org/rfc/rfc8375.html
 resolvectl domain eth0 home.arpa
 
-systemctl enable systemd-networkd.service --now
-systemctl enable systemd-resolved.service --now
+systemctl enable systemd-networkd.service 
+systemctl enable systemd-resolved.service 
 
 read -p "pausing... press enter to continue"
 
