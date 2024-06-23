@@ -58,14 +58,15 @@ echo -e "\nSettings filesystem to BTRFS\n"
 EFI="/dev/disk/by-id/nvme-eui.002538414143a0a5-part1"
 ROOT="/dev/disk/by-id/nvme-eui.002538414143a0a5-part2"
 
-mkfs.vfat -F32 -n -f "EFI" "${EFI}"
-mkfs.btrfs -L -f "Root" "${ROOT}"
-
 #Unmount if already mounted (eg runnning script twice)
+swapoff /mnt/swap/swapfile
 umount /mnt/boot/efi
 umount /mnt
 
-# The "trick" is to mount the EFI partition to /boot/efi directory
+mkfs.vfat -F32 -n "EFI" -f "${EFI}"
+mkfs.btrfs -L "Root" -f "${ROOT}"
+
+# The idea is to mount the EFI partition to /boot/efi directory
 # in this way /boot still use btrfs filesystem and /boot/efi use vfat filesystem,
 # kernels are stored in /boot and are included in the snapshots
 # so no problems with the restores because kernel, libraries and all the system are always "synchronized" 
