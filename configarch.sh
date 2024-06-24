@@ -93,14 +93,15 @@ cp -r /usr/share/refind/icons /boot/efi/EFI/refind/
 
 #create $UUID from fstab because UUID changes after mkfs
 read UUID <<< $(cat /etc/fstab | grep -A1 Root | grep UUID | awk -v col=1 '{print $col}' | cut -d "=" -f 2)
+PARTUUID=$(blkid -t UUID=$UUID -s PARTUUID -o value)
+echo "grabbed UUID $UUID to get PARTUUID $PARTUUID"
 
-echo "grabbed UUID $UUID"
 read -p "press enter to continue"
 
 cat <<BOOT > /boot/refind_linux.conf
-"Boot using default options"     "root=PARTUUID=$UUID rw loglevel=3 quiet nvidia_drm.modeset=1"
-"Boot using fallback initramfs"  "root=PARTUUID=$UUID rw initrd=boot\initramfs-%v-fallback.img"
-"Boot to terminal"               "root=PARTUUID=$UUID rw systemd.unit=multi-user.target"
+"Boot using default options"     "root=PARTUUID=$PARTUUID rw loglevel=3 quiet nvidia_drm.modeset=1"
+"Boot using fallback initramfs"  "root=PARTUUID=$PARTUUID rw initrd=boot\initramfs-%v-fallback.img"
+"Boot to terminal"               "root=PARTUUID=$PARTUUID rw systemd.unit=multi-user.target"
 BOOT
 
 cp /usr/share/refind/refind.conf-sample /boot/efi/EFI/refind/refind.conf
@@ -110,9 +111,9 @@ cat <<STANZA >> /boot/efi/EFI/refind/refind.conf
 menuentry "Arch Linux" {
 	icon     /EFI/refind/icons/os_arch.png
 	volume   "Root"
-	loader   /boot/vmlinuz-linux
+	loader   /boot/vmlinuz-linux 
 	initrd   /boot/initramfs-linux.img
-	options  "root=PARTUUID=$UUID rw loglevel=3 quiet nvidia_drm.modeset=1"
+	options  "root=PARTUUID=$PARTUUID rw loglevel=3 quiet nvidia_drm.modeset=1"
 	submenuentry "Boot using fallback initramfs" {
 		initrd /boot/initramfs-linux-fallback.img
 	}
