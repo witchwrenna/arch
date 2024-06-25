@@ -85,7 +85,7 @@ umount /mnt
 # space cache improves more performance to know where are free blocks
 mount -o noatime,ssd,space_cache=v2,compress=zstd,discard=async,subvol=@ "${ROOT}" /mnt
 
-mkdir /mnt/home /mnt/snapshots /mnt/var/log
+mkdir -P /mnt/home /mnt/.snapshots /mnt/var/log /mnt/var/cache
 mount -o noatime,ssd,space_cache=v2,compress=zstd,discard=async,subvol=@home "${ROOT}" /mnt/home
 mount -o noatime,ssd,space_cache=v2,compress=zstd,discard=async,subvol=@snapshots "${ROOT}" /mnt/.snapshots
 mount -o noatime,ssd,space_cache=v2,compress=zstd,discard=async,subvol=@var_log "${ROOT}" /mnt/var/log
