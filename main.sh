@@ -17,4 +17,4 @@ mkdir -p /mnt/home/lilith/.config/hypr/
 mv arch-main/config/hyprland.conf /mnt/home/lilith/.config/hypr/hyprland.conf
 
 #Get dotfiles sync support up
-arch-chroot /mnt sh /installgit.sh
+arch-chroot /mnt sh /configgit.sh

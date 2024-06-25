@@ -87,6 +87,8 @@ mkdir -p /boot/efi/EFI/refind
 cp /usr/share/refind/refind_x64.efi /boot/efi/EFI/refind/
 mkdir -p /boot/efi/EFI/refind/drivers_x64
 cp /usr/share/refind/drivers_x64/btrfs_x64.efi /boot/efi/EFI/refind/drivers_x64/
+mkdir -p /boot/efi/EFI/refind/themes
+git clone https://github.com/kgoettler/ursamajor-rEFInd.git /boot/efi/EFI/refind/themes
 
 efibootmgr --create --disk /dev/disk/by-id/nvme-eui.002538414143a0a5 --part 1 --loader /EFI/refind/refind_x64.efi --label "DemonBoot" --unicode
 cp -r /usr/share/refind/icons /boot/efi/EFI/refind/
@@ -121,6 +123,8 @@ menuentry "Arch Linux" {
 		add_options "systemd.unit=multi-user.target"
 	}
 }
+
+include themes/ursamajor-rEFInd/theme.conf
 STANZA
 
 echo "-------------------------------------------------"
