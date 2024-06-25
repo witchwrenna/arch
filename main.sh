@@ -22,7 +22,7 @@ mv arch-main/config/hyprland.conf /mnt/home/lilith/.config/hypr/hyprland.conf
 
 
 # todo: 
-# Git script does not apply alias to zsh because of chroot
+# Git script does not apply alias and config changes because of chroot?
 # Rice zsh
 # rice hyprland
 # refind uggly af fix that shit
@@ -33,3 +33,13 @@ mv arch-main/config/hyprland.conf /mnt/home/lilith/.config/hypr/hyprland.conf
 # https://github.com/fosslife/awesome-ricing
 # Set alias for new programs (bat, fs, eza)
 # Timeshift on btrfs with grub-btrfs can't be beat for snappyshots :3
+# visual studio code?
+# slip in main.sh into arch iso?
+# spaceship?;''''''''''
+# install nerd fonts? ttf-firacode-nerd as example
+# set font for kitty
+# fzf - ctrl + r search
+# get all those dotfiles working
+# install gh for authentication
+# then do gh auth setup-git
+
