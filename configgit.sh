@@ -31,11 +31,11 @@ dotfiles config --local status.showUntrackedFiles no
 
 
 
-#To add stuff...
-#dotfiles add $Filename
-#dotfiles commit -m "Updating file!"
-#dotfiles push
+# To add stuff...
+# dotfiles add $Filename
+# dotfiles commit -m "Updating file!"
+# dotfiles push
 
-#other commands
-dotfiles status
-dotfiles checkout
+# other commands
+# dotfiles status
+# dotfiles checkout
