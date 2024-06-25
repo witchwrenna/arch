@@ -66,14 +66,37 @@ umount /mnt
 mkfs.vfat -F32 -n "EFI" "${EFI}"
 mkfs.btrfs -L "Root" -f "${ROOT}"
 
+#get started creating btrfs subvolumes
+mount "${ROOT}" /mnt
+
+#Set up btrfs subvolumes
+btrfs subvolume create /mnt/@
+btrfs subvolume create /mnt/@home
+btrfs subvolume create /mnt/@snapshots
+btrfs subvolume create /mnt/@var_log
+btrfs subvolume create /mnt/@var_cache
+
+umount /mnt
+
+#need to mount root volume
+#options:
+# noatime stops reading metadata all the time, increases speed
+# compression to save space
+# space cache improves more performance to know where are free blocks
+mount -o noatime,ssd,space_cache=v2,compress=zstd,discard=async,subvol=@ "${ROOT}" /mnt
+
+mkdir /mnt/home /mnt/snapshots /mnt/var/log
+mount -o noatime,ssd,space_cache=v2,compress=zstd,discard=async,subvol=@home "${ROOT}" /mnt/home
+mount -o noatime,ssd,space_cache=v2,compress=zstd,discard=async,subvol=@snapshots "${ROOT}" /mnt/.snapshots
+mount -o noatime,ssd,space_cache=v2,compress=zstd,discard=async,subvol=@var_log "${ROOT}" /mnt/var/log
+mount -o noatime,ssd,space_cache=v2,compress=zstd,discard=async,subvol=@var_cache "${ROOT}" /mnt/var/cache
+
 # The idea is to mount the EFI partition to /boot/efi directory
 # in this way /boot still use btrfs filesystem and /boot/efi use vfat filesystem,
 # kernels are stored in /boot and are included in the snapshots
 # so no problems with the restores because kernel, libraries and all the system are always "synchronized" 
 # mount target
-mount "${ROOT}" /mnt
-mkdir /mnt/boot
-mkdir /mnt/boot/efi
+mkdir -p /mnt/boot/efi
 mount -t vfat "${EFI}" /mnt/boot/efi
 
 echo -e "\nCreating Swap File\n"
