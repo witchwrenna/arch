@@ -21,5 +21,15 @@ mv arch-main/config/hyprland.conf /mnt/home/lilith/.config/hypr/hyprland.conf
 #arch-chroot /mnt sh /configgit.sh
 
 
-#TBD... arch chroot sets wrong user permissions when in home file
-#Git script does not apply alias to zsh
+# todo: 
+# Git script does not apply alias to zsh because of chroot
+# Rice zsh
+# rice hyprland
+# refind uggly af fix that shit
+# Update /etc/default/useradd config to point to /bin/zsh
+# sound not working
+# set up plymouth? look into alternatives too
+# https://wiki.archlinux.org/title/Category:Eye_candy
+# https://github.com/fosslife/awesome-ricing
+# Set alias for new programs (bat, fs, eza)
+# Timeshift on btrfs with grub-btrfs can't be beat for snappyshots :3

@@ -126,14 +126,3 @@ cat /mnt/etc/fstab
 
 #read -p "fstab done please check output(enter)"
 
-# todo: 
-# Update /etc/default/useradd config to point to /bin/zsh
-# verify pipeware
-# get wayland+hyprland working (nvidia issues?)
-# rice the login manager
-# set up plymouth? look into alternatives too
-# https://wiki.archlinux.org/title/Category:Eye_candy
-# https://github.com/fosslife/awesome-ricing
-# Set alias for new programs (bat, fs, eza)
-# Timeshift on btrfs with grub-btrfs can't be beat for snappyshots :3
-# Figure out best way to copy entire config files
