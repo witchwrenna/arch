@@ -121,7 +121,7 @@ menuentry "Arch Linux" {
 	initrd   /boot/initramfs-linux.img
 	options  "root=PARTUUID=$PARTUUID rootflags=subvol=@ rw loglevel=3 quiet nvidia_drm.modeset=1"
 	submenuentry "Boot using fallback initramfs" {
-		initrd @/boot/initramfs-linux-fallback.img
+		initrd /boot/initramfs-linux-fallback.img
 	}
 	submenuentry "Boot to terminal" {
 		add_options "systemd.unit=multi-user.target"
