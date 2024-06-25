@@ -155,7 +155,7 @@ echo "--------------------------------------"
 echo "-- Installing the important stuff --"
 echo "--------------------------------------"
 
-pacman -S hyfetch man htop git sudo neovim nano firefox less --noconfirm --needed
+pacman -S hyfetch man htop sudo neovim nano firefox less --noconfirm --needed
 
 echo "-------------------------------------------------"
 echo "Install Complete, You can reboot now"
