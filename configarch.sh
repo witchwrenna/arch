@@ -137,7 +137,8 @@ echo "Installing wayland + hyprland"
 echo "-------------------------------------------------"
 
 #Following https://wiki.hyprland.org/Nvidia/
-pacman -S egl-wayland hyprland sddm --noconfirm --needed
+pacman -S egl-wayland hyprland kitty polkit sddm xdg-desktop-portal-hyprland xdg-desktop-portal-gtk qt5-wayland qt6-wayland --noconfirm --needed
+
 sed -i 's/^MODULES=()/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
 echo "options nvidia_drm modeset=1 fbdev=1" > /etc/modprobe.d/nvidia.conf
 mkinitcpio -P
@@ -161,6 +162,9 @@ echo "-- Installing the important stuff --"
 echo "--------------------------------------"
 
 pacman -S hyfetch man htop sudo neovim nano firefox less --noconfirm --needed
+
+#Fix permission issues caused by using chroot
+chown -hR lilith:witches /home/lilith
 
 echo "-------------------------------------------------"
 echo "Install Complete, You can reboot now"

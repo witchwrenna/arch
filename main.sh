@@ -17,4 +17,9 @@ mkdir -p /mnt/home/lilith/.config/hypr/
 mv arch-main/config/hyprland.conf /mnt/home/lilith/.config/hypr/hyprland.conf
 
 #Get dotfiles sync support up
-arch-chroot /mnt sh /configgit.sh
+#disabling because needs to be run as user
+#arch-chroot /mnt sh /configgit.sh
+
+
+#TBD... arch chroot sets wrong user permissions when in home file
+#Git script does not apply alias to zsh
