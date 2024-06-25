@@ -11,7 +11,6 @@ git config --global user.email witchwrenna@gmail.com
 git config --global credential.credentialStore cache
 
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 #Creation... it's a one time thing that i already did so including it for historical reference
 creation=false
@@ -21,6 +20,7 @@ if ["$creation" = true] ; then
     dotfiles branch -M main
 else
     git clone --bare https://github.com/witchwrenna/dotfiles $HOME/.dotfiles
+    dotfiles checkout -f
 fi
 
 cd ~
