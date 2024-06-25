@@ -6,7 +6,7 @@ unzip -o ~/master.zip
 sh arch-main/installarch.sh
 
 #Copy over scripts to prepare for chroot
-mv arch-main/configarch.sh /mnt/configarch.sh
+mv arch-main/configgit.sh /mnt/configgit.sh
 mv arch-main/installgit.sh /mnt/installgit.sh
 
 #Customize the OS!

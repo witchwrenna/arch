@@ -91,6 +91,7 @@ cp /usr/share/refind/refind_x64.efi /boot/efi/EFI/refind/
 mkdir -p /boot/efi/EFI/refind/drivers_x64
 cp /usr/share/refind/drivers_x64/btrfs_x64.efi /boot/efi/EFI/refind/drivers_x64/
 mkdir -p /boot/efi/EFI/refind/themes
+
 git clone https://github.com/kgoettler/ursamajor-rEFInd.git /boot/efi/EFI/refind/themes
 
 efibootmgr --create --disk /dev/disk/by-id/nvme-eui.002538414143a0a5 --part 1 --loader /EFI/refind/refind_x64.efi --label "DemonBoot" --unicode
@@ -104,9 +105,9 @@ echo "grabbed UUID $UUID to get PARTUUID $PARTUUID"
 read -p "press enter to continue"
 
 cat <<BOOT > /boot/refind_linux.conf
-"Boot using default options"     "root=PARTUUID=$PARTUUID rw loglevel=3 quiet nvidia_drm.modeset=1"
-"Boot using fallback initramfs"  "root=PARTUUID=$PARTUUID rw initrd=boot\initramfs-%v-fallback.img"
-"Boot to terminal"               "root=PARTUUID=$PARTUUID rw systemd.unit=multi-user.target"
+"Boot using default options"     "root=PARTUUID=$PARTUUID rootflags=subvol=@ rw loglevel=3 quiet nvidia_drm.modeset=1"
+"Boot using fallback initramfs"  "root=PARTUUID=$PARTUUID rootflags=subvol=@ rw initrd=boot\initramfs-%v-fallback.img"
+"Boot to terminal"               "root=PARTUUID=$PARTUUID rootflags=subvol=@ rw systemd.unit=multi-user.target"
 BOOT
 
 cp /usr/share/refind/refind.conf-sample /boot/efi/EFI/refind/refind.conf
@@ -116,8 +117,8 @@ cat <<STANZA >> /boot/efi/EFI/refind/refind.conf
 menuentry "Arch Linux" {
 	icon     /EFI/refind/icons/os_arch.png
 	volume   "Root"
-	loader   /@/boot/vmlinuz-linux 
-	initrd   /@/boot/initramfs-linux.img
+	loader   /boot/vmlinuz-linux 
+	initrd   /boot/initramfs-linux.img
 	options  "root=PARTUUID=$PARTUUID rootflags=subvol=@ rw loglevel=3 quiet nvidia_drm.modeset=1"
 	submenuentry "Boot using fallback initramfs" {
 		initrd @/boot/initramfs-linux-fallback.img
