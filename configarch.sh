@@ -102,7 +102,7 @@ read UUID <<< $(cat /etc/fstab | grep -A1 Root | grep UUID | awk -v col=1 '{prin
 PARTUUID=$(blkid -t UUID=$UUID -s PARTUUID -o value)
 echo "grabbed UUID $UUID to get PARTUUID $PARTUUID"
 
-read -p "press enter to continue"
+# read -p "press enter to continue"
 
 cat <<BOOT > /boot/refind_linux.conf
 "Boot using default options"     "root=PARTUUID=$PARTUUID rootflags=subvol=@ rw loglevel=3 quiet nvidia_drm.modeset=1"
