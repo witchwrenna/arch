@@ -9,6 +9,9 @@ sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
 #Let's enable parallel downloads :3
 sed -i 's/#ParallelDownloads.*/ParallelDownloads=10/' /etc/pacman.conf
 
+systemctl enable fstrim.timer
+systemctl enable reflector.timer
+
 echo "-------------------------------------------------"
 echo "Setup Language to US and set locale"
 echo "-------------------------------------------------"
@@ -113,11 +116,11 @@ cat <<STANZA >> /boot/efi/EFI/refind/refind.conf
 menuentry "Arch Linux" {
 	icon     /EFI/refind/icons/os_arch.png
 	volume   "Root"
-	loader   /boot/vmlinuz-linux 
-	initrd   /boot/initramfs-linux.img
-	options  "root=PARTUUID=$PARTUUID rw loglevel=3 quiet nvidia_drm.modeset=1"
+	loader   /@/boot/vmlinuz-linux 
+	initrd   /@/boot/initramfs-linux.img
+	options  "root=PARTUUID=$PARTUUID rootflags=subvol=@ rw loglevel=3 quiet nvidia_drm.modeset=1"
 	submenuentry "Boot using fallback initramfs" {
-		initrd /boot/initramfs-linux-fallback.img
+		initrd @/boot/initramfs-linux-fallback.img
 	}
 	submenuentry "Boot to terminal" {
 		add_options "systemd.unit=multi-user.target"
@@ -146,7 +149,7 @@ echo "-------------------------------------------------"
 echo "Setting up audio"
 echo "-------------------------------------------------"
 
-pacman -S pipewire pipewire-audio pipewire-pulse wireplumber --noconfirm --needed
+pacman -S pipewire pipewire-audio pipewire-pulse pipewire-alsa pipewire-jack wireplumber --noconfirm --needed
 systemctl --user enable pipewire pipewire-pulse wireplumber
 
 # read -p "pausing... press enter to continue"
@@ -160,4 +163,3 @@ pacman -S hyfetch man htop sudo neovim nano firefox less --noconfirm --needed
 echo "-------------------------------------------------"
 echo "Install Complete, You can reboot now"
 echo "-------------------------------------------------"
-
