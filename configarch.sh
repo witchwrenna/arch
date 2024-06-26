@@ -8,6 +8,7 @@ sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
 
 #Let's enable parallel downloads :3
 sed -i 's/#ParallelDownloads.*/ParallelDownloads=10/' /etc/pacman.conf
+sed -i '/color/s/^#//g' /etc/pacman.conf
 
 systemctl enable fstrim.timer
 
@@ -59,6 +60,8 @@ sed -i 's/^#Domains=/Domains=home.arpa/' /etc/systemd/resolved.conf
 #following https://www.rfc-editor.org/rfc/rfc8375.html
 systemctl enable systemd-networkd.service 
 systemctl enable systemd-resolved.service 
+
+ln -sf ../run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
 
 # read -p "pausing... press enter to continue"
 
@@ -165,10 +168,11 @@ echo "--------------------------------------"
 pacman -S hyfetch man htop vesktop sudo neovim nano firefox less fzf ttf-firecode-nerd starship eza zsh-syntax-highlighting zsh-autosuggestions --noconfirm --needed
 
 #Install yay for AUR access
-# pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si
-# yay -Y --gendb
-# yay -Syu --devel
-# yay -Y --devel --save
+pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin && makepkg -si
+yay -Y --gendb
+yay -Syu --devel
+yay -Y --devel --save
+yes | yay -S vesktop --noconfirm --answerclean All --answerdiff All 
 
 #Fix permission issues caused by using chroot
 chown -hR lilith:witches /home/lilith
