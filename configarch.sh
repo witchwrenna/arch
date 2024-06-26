@@ -10,7 +10,8 @@ sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
 sed -i 's/#ParallelDownloads.*/ParallelDownloads=10/' /etc/pacman.conf
 
 systemctl enable fstrim.timer
-systemctl enable reflector.timer
+
+# systemctl enable reflector.timer
 
 echo "-------------------------------------------------"
 echo "Setup Language to US and set locale"
@@ -162,6 +163,12 @@ echo "-- Installing the important stuff --"
 echo "--------------------------------------"
 
 pacman -S hyfetch man htop vesktop sudo neovim nano firefox less fzf ttf-firecode-nerd starship eza zsh-syntax-highlighting zsh-autosuggestions --noconfirm --needed
+
+#Install yay for AUR access
+# pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si
+# yay -Y --gendb
+# yay -Syu --devel
+# yay -Y --devel --save
 
 #Fix permission issues caused by using chroot
 chown -hR lilith:witches /home/lilith
