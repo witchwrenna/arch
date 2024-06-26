@@ -141,7 +141,7 @@ echo "Installing wayland + hyprland"
 echo "-------------------------------------------------"
 
 #Following https://wiki.hyprland.org/Nvidia/
-pacman -S egl-wayland hyprland kitty polkit sddm xdg-desktop-portal-hyprland xdg-desktop-portal-gtk qt5-wayland qt6-wayland --noconfirm --needed
+pacman -S egl-wayland hyprland waybar kitty polkit polkit-kde-agent sddm xdg-desktop-portal-hyprland xdg-desktop-portal-gtk qt5-wayland qt6-wayland --noconfirm --needed
 
 sed -i 's/^MODULES=()/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
 echo "options nvidia_drm modeset=1 fbdev=1" > /etc/modprobe.d/nvidia.conf
@@ -164,15 +164,27 @@ systemctl --user enable pipewire pipewire-pulse wireplumber
 echo "--------------------------------------"
 echo "-- Installing the important stuff --"
 echo "--------------------------------------"
+#This section is i think a little more custom and changable... maybe future reruns could use just this section?
 
-pacman -S hyfetch man htop bat vesktop sudo neovim nano firefox less fzf ttf-firecode-nerd starship eza zsh-syntax-highlighting zsh-autosuggestions --noconfirm --needed
+#assorted utilities
+pacman -S hyfetch man htop bat sudo neovim nano less fzf --noconfirm --needed
+
+#zsh rice
+pacman -S ttf-firecode-nerd starship eza zsh-syntax-highlighting zsh-autosuggestions --noconfirm -needed
+
+#firefox setup
+pacman -S firefox --noconfirm --needed
 
 #Install yay for AUR access
 pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin && makepkg -si
 yay -Y --gendb
 yay -Syu --devel
 yay -Y --devel --save
+
+#Using yay to get vesktop
 yes | yay -S vesktop --noconfirm --answerclean All --answerdiff All 
+
+read -p "did yay and vestop compile correctly? check about to verify" 
 
 #Fix permission issues caused by using chroot
 chown -hR lilith:witches /home/lilith
