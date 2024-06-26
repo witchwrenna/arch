@@ -16,10 +16,16 @@ arch-chroot /mnt sh configarch.sh
 mkdir -p /mnt/home/lilith/.config/hypr/
 mv arch-main/config/hyprland.conf /mnt/home/lilith/.config/hypr/hyprland.conf
 
+
+
 #Get dotfiles sync support up
-#disabling because needs to be run as user
+
+#disabling because needs to be run as user?
 #arch-chroot /mnt sh /configgit.sh
 
+# clean up after done
+# rm /mnt/configgit.sh
+# rm /mnt/configarch.sh
 
 # todo: 
 # Git script does not apply alias and config changes because of chroot?
