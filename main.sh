@@ -23,13 +23,12 @@ mv arch-main/config/hyprland.conf /mnt/home/lilith/.config/hypr/hyprland.conf
 #disabling because needs to be run as user?
 arch-chroot /mnt sh /configgit.sh
 
-# clean up after done
-# rm /mnt/configgit.sh
-# rm /mnt/configarch.sh
+# clean up after done or the files stay after booting
+rm /mnt/configgit.sh
+rm /mnt/configarch.sh
 
 # todo: 
 # Git script does not apply alias and config changes because of chroot?
-# Rice zsh
 # rice hyprland
 # refind uggly af fix that shit
 # Update /etc/default/useradd config to point to /bin/zsh
@@ -41,11 +40,7 @@ arch-chroot /mnt sh /configgit.sh
 # Timeshift on btrfs with grub-btrfs can't be beat for snappyshots :3
 # visual studio code?
 # slip in main.sh into arch iso?
-# spaceship?;''''''''''
-# install nerd fonts? ttf-firacode-nerd as example
-# set font for kitty
-# fzf - ctrl + r search
-# get all those dotfiles working
+# set font for kitty - partially done still need to look into it
 # install gh for authentication
 # then do gh auth setup-git
 # set up gsync and correct framerate
@@ -54,5 +49,9 @@ arch-chroot /mnt sh /configgit.sh
 # screensaver??
 # maybe have a base install + additional programs?
 # maybe some stuff should be seperate and not part of a base install
+# copy paste is fucky
+# sddm rice
+# setup keyboard volume knob
 
-#example of firefox
+#example of firefox config
+# https://github.com/sameemul-haque/dotfiles/tree/mocha/.whiteSur-firefox-theme
