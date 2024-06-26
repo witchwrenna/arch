@@ -161,7 +161,7 @@ echo "--------------------------------------"
 echo "-- Installing the important stuff --"
 echo "--------------------------------------"
 
-pacman -S hyfetch man htop sudo neovim nano firefox less --noconfirm --needed
+pacman -S hyfetch man htop sudo neovim nano firefox less fzf ttf-firecode-nerd starship eza  --noconfirm --needed
 
 #Fix permission issues caused by using chroot
 chown -hR lilith:witches /home/lilith

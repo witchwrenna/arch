@@ -7,25 +7,24 @@ echo "-------------------------------------------------"
 echo "Setup git and dotfiles"
 echo "-------------------------------------------------"
 
-mkdir $HOME/dotfiles
+mkdir $HOME/.dotfiles
 
 git config --global user.name "Witch Wrenna"
 git config --global user.email witchwrenna@gmail.com
 git config --global credential.credentialStore cache
 
-alias dotfiles='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
-
+alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 #Creation... it's a one time thing that i already did so including it for historical reference
 creation=false
 
 cd ~
 if ["$creation" = true] ; then
-    git init --bare $HOME/dotfiles
+    git init --bare $HOME/.dotfiles
     dotfiles branch -M main
 else
-    git clone --bare https://github.com/witchwrenna/dotfiles $HOME/dotfiles
-    dotfiles checkout
+    git clone --bare https://github.com/witchwrenna/dotfiles $HOME/.dotfiles
+    dotfiles checkout -f
 fi
 
 dotfiles config --local status.showUntrackedFiles no
