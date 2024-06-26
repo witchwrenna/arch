@@ -165,7 +165,7 @@ echo "--------------------------------------"
 echo "-- Installing the important stuff --"
 echo "--------------------------------------"
 
-pacman -S hyfetch man htop vesktop sudo neovim nano firefox less fzf ttf-firecode-nerd starship eza zsh-syntax-highlighting zsh-autosuggestions --noconfirm --needed
+pacman -S hyfetch man htop bat vesktop sudo neovim nano firefox less fzf ttf-firecode-nerd starship eza zsh-syntax-highlighting zsh-autosuggestions --noconfirm --needed
 
 #Install yay for AUR access
 pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin && makepkg -si
