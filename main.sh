@@ -21,7 +21,7 @@ mv arch-main/config/hyprland.conf /mnt/home/lilith/.config/hypr/hyprland.conf
 #Get dotfiles sync support up
 
 #disabling because needs to be run as user?
-#arch-chroot /mnt sh /configgit.sh
+arch-chroot /mnt sh /configgit.sh
 
 # clean up after done
 # rm /mnt/configgit.sh
@@ -48,4 +48,11 @@ mv arch-main/config/hyprland.conf /mnt/home/lilith/.config/hypr/hyprland.conf
 # get all those dotfiles working
 # install gh for authentication
 # then do gh auth setup-git
+# set up gsync and correct framerate
+# ctrl arrows + home/end doesn't work in zsh?
+# configure waybar + all the other hyprland stuff
+# screensaver??
+# maybe have a base install + additional programs?
+# maybe some stuff should be seperate and not part of a base install
 
+#example of firefox
