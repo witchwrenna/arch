@@ -175,6 +175,9 @@ pacman -S ttf-firecode-nerd starship eza zsh-syntax-highlighting zsh-autosuggest
 #firefox setup
 pacman -S firefox --noconfirm --needed
 
+#install nvchad
+git clone https://github.com/NvChad/starter ~/.config/nvim
+
 #Install yay for AUR access
 pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin && makepkg -si
 yay -Y --gendb
