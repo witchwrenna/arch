@@ -96,7 +96,7 @@ mkdir -p /boot/efi/EFI/refind/drivers_x64
 cp /usr/share/refind/drivers_x64/btrfs_x64.efi /boot/efi/EFI/refind/drivers_x64/
 mkdir -p /boot/efi/EFI/refind/themes/ursamajor-rEFInd/
 
-git clone https://github.com/kgoettler/ursamajor-rEFInd.git /boot/efi/EFI/refind/themes/ursamajor-rEFInd/
+git clone https://github.com/evanpurkhiser/rEFInd-minimal /boot/efi/EFI/refind/themes/rEFInd-minimal/
 
 efibootmgr --create --disk /dev/disk/by-id/nvme-eui.002538414143a0a5 --part 1 --loader /EFI/refind/refind_x64.efi --label "DemonBoot" --unicode
 cp -r /usr/share/refind/icons /boot/efi/EFI/refind/
@@ -120,7 +120,7 @@ sed -i '/enable_mouse/s/^#//g' /boot/efi/EFI/refind/refind.conf
 
 cat <<STANZA >> /boot/efi/EFI/refind/refind.conf
 menuentry "Arch Linux" {
-	icon     /EFI/refind/icons/os_arch.png
+	icon     /EFI/refind/themes/rEFInd-minimal/icons/os_arch.png
 	volume   "Root"
 	loader   /boot/vmlinuz-linux 
 	initrd   /boot/initramfs-linux.img
@@ -133,7 +133,7 @@ menuentry "Arch Linux" {
 	}
 }
 
-include themes/ursamajor-rEFInd/theme.conf
+include themes/rEFInd-minimal/theme.conf
 STANZA
 
 echo "-------------------------------------------------"
