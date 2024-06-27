@@ -95,7 +95,6 @@ mkdir -p /boot/efi/EFI/refind
 cp /usr/share/refind/refind_x64.efi /boot/efi/EFI/refind/
 mkdir -p /boot/efi/EFI/refind/drivers_x64
 cp /usr/share/refind/drivers_x64/btrfs_x64.efi /boot/efi/EFI/refind/drivers_x64/
-mkdir -p /boot/efi/EFI/refind/themes/ursamajor-rEFInd/
 
 git clone https://github.com/evanpurkhiser/rEFInd-minimal /boot/efi/EFI/refind/themes/rEFInd-minimal/
 
@@ -115,27 +114,27 @@ cat <<BOOT > /boot/refind_linux.conf
 "Boot to terminal"               "root=PARTUUID=$PARTUUID rootflags=subvol=@ rw systemd.unit=multi-user.target"
 BOOT
 
-cp /usr/share/refind/refind.conf-sample /boot/efi/EFI/refind/refind.conf
-sed -i '/extra_kernel_version_strings/s/^#//g' /boot/efi/EFI/refind/refind.conf
-sed -i '/enable_mouse/s/^#//g' /boot/efi/EFI/refind/refind.conf
+# cp /usr/share/refind/refind.conf-sample /boot/efi/EFI/refind/refind.conf
+# sed -i '/extra_kernel_version_strings/s/^#//g' /boot/efi/EFI/refind/refind.conf
+# sed -i '/enable_mouse/s/^#//g' /boot/efi/EFI/refind/refind.conf
 
-cat <<STANZA >> /boot/efi/EFI/refind/refind.conf
-menuentry "Arch Linux" {
-	icon     /EFI/refind/themes/rEFInd-minimal/icons/os_arch.png
-	volume   "Root"
-	loader   /boot/vmlinuz-linux 
-	initrd   /boot/initramfs-linux.img
-	options  "root=PARTUUID=$PARTUUID rootflags=subvol=@ rw loglevel=3 quiet nvidia_drm.modeset=1"
-	submenuentry "Boot using fallback initramfs" {
-		initrd /boot/initramfs-linux-fallback.img
-	}
-	submenuentry "Boot to terminal" {
-		add_options "systemd.unit=multi-user.target"
-	}
-}
+# cat <<STANZA >> /boot/efi/EFI/refind/refind.conf
+# menuentry "Arch Linux" {
+# 	icon     /EFI/refind/themes/rEFInd-minimal/icons/os_arch.png
+# 	volume   "Root"
+# 	loader   /boot/vmlinuz-linux 
+# 	initrd   /boot/initramfs-linux.img
+# 	options  "root=PARTUUID=$PARTUUID rootflags=subvol=@ rw loglevel=3 quiet nvidia_drm.modeset=1"
+# 	submenuentry "Boot using fallback initramfs" {
+# 		initrd /boot/initramfs-linux-fallback.img
+# 	}
+# 	submenuentry "Boot to terminal" {
+# 		add_options "systemd.unit=multi-user.target"
+# 	}
+# }
 
-include themes/rEFInd-minimal/theme.conf
-STANZA
+# include themes/rEFInd-minimal/theme.conf
+# STANZA
 
 echo "-------------------------------------------------"
 echo "Setting up audio"

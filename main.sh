@@ -16,6 +16,9 @@ arch-chroot /mnt sh configarch.sh
 mkdir -p /mnt/home/lilith/.config/hypr/
 mv arch-main/config/hyprland.conf /mnt/home/lilith/.config/hypr/hyprland.conf
 
+mkdir -p /mnt/boot/efi/EFI/refind/
+mv arch-main/config/refind.conf /mnt/boot/efi/EFI/refind/refind.conf
+
 
 
 #Get dotfiles sync support up
