@@ -9,7 +9,7 @@ sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
 #Let's enable parallel downloads, colours, and sync the latest stuff :3
 sed -i 's/#ParallelDownloads.*/ParallelDownloads=10/' /etc/pacman.conf
 sed -i '/color/s/^#//g' /etc/pacman.conf
-pacman -Sy
+
 
 systemctl enable fstrim.timer
 
@@ -181,7 +181,7 @@ pacman -S firefox --noconfirm --needed
 git clone https://github.com/NvChad/starter ~/.config/nvim
 
 #SDDM
-pacman -S sddm qt5‑graphicaleffects qt5‑quickcontrols2 qt5‑svg --needed --noconfirm
+pacman -Suy sddm qt5‑graphicaleffects qt5‑quickcontrols2 qt5‑svg --needed --noconfirm
 git clone https://github.com/Kangie/sddm-sugar-candy /usr/share/sddm/themes/sugar-candy
 mkdir /etc/sddm.conf.d/
 cat <<EOF > /etc/sddm.conf.d/theme.conf
@@ -192,13 +192,14 @@ EOF
 systemctl enable sddm.service
 
 #Install yay for AUR access
-pacman -S --needed --noconfirm git base-devel && git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin && makepkg -si
-yay -Y --gendb
-yay -Syu --devel
-yay -Y --devel --save
+#Actually can't do this because makepg doesn't let sudo happen
+# pacman -S --needed --noconfirm git base-devel && git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin && makepkg -si
+# yay -Y --gendb
+# yay -Syu --devel
+# yay -Y --devel --save
 
-#Using yay to get vesktop
-yes | yay -S vesktop --noconfirm --answerclean All --answerdiff All 
+# #Using yay to get vesktop
+# yes | yay -S vesktop --noconfirm --answerclean All --answerdiff All 
 
 read -p "did yay and vestop compile correctly? check about to verify" 
 

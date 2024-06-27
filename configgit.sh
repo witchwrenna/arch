@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 #do a heredoc to run under user context sudo
-sudo -i -u lilith bash << EOF
 
 echo "-------------------------------------------------"
 echo "Setup git and dotfiles"
@@ -31,7 +30,6 @@ dotfiles config --local status.showUntrackedFiles no
 
 cd ~
 dotfiles clone https://github.com/witchwrenna/arch
-EOF
 
 
 

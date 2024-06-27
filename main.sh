@@ -21,10 +21,10 @@ mv arch-main/config/hyprland.conf /mnt/home/lilith/.config/hypr/hyprland.conf
 #Get dotfiles sync support up
 
 #disabling because needs to be run as user?
-arch-chroot /mnt sh /configgit.sh
+# arch-chroot /mnt sh /configgit.sh
 
 # clean up after done or the files stay after booting
-rm /mnt/configgit.sh
+# rm /mnt/configgit.sh
 rm /mnt/configarch.sh
 
 # todo: 
