@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-#do a heredoc to run under user context sudo
-
 echo "-------------------------------------------------"
 echo "Setup git and dotfiles"
 echo "-------------------------------------------------"
@@ -41,5 +39,5 @@ dotfiles clone https://github.com/witchwrenna/arch
 # dotfiles status
 # dotfiles checkout
 
-
+#cleanup after itself
 rm /postinstall.sh
