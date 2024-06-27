@@ -141,14 +141,14 @@ echo "Installing wayland + hyprland"
 echo "-------------------------------------------------"
 
 #Following https://wiki.hyprland.org/Nvidia/
-pacman -S egl-wayland hyprland waybar kitty polkit polkit-kde-agent sddm xdg-desktop-portal-hyprland xdg-desktop-portal-gtk qt5-wayland qt6-wayland --noconfirm --needed
+pacman -S egl-wayland hyprland waybar kitty polkit polkit-kde-agent xdg-desktop-portal-hyprland xdg-desktop-portal-gtk qt5-wayland qt6-wayland --noconfirm --needed
 
 sed -i 's/^MODULES=()/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
 echo "options nvidia_drm modeset=1 fbdev=1" > /etc/modprobe.d/nvidia.conf
 mkinitcpio -P
 #Check for errors of missing nvidia headers or whatever after mkinicpio
 
-systemctl enable sddm.service
+
 
 # read -p "pausing... press enter to continue"
 
@@ -178,6 +178,16 @@ pacman -S firefox --noconfirm --needed
 
 #install nvchad
 git clone https://github.com/NvChad/starter ~/.config/nvim
+
+#SDDM
+pacman -S sddm qt5‑graphicaleffects qt5‑quickcontrols2 qt5‑svg --needed --noconfirm
+git clone https://github.com/Kangie/sddm-sugar-candy /usr/share/sddm/themes/sugar-candy
+cat <<EOF > /etc/sddm.conf.d/theme.conf
+[Theme]
+Current=sugar-candy
+EOF
+
+systemctl enable sddm.service
 
 #Install yay for AUR access
 pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin && makepkg -si
