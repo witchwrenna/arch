@@ -181,7 +181,7 @@ pacman -S firefox --noconfirm --needed
 git clone https://github.com/NvChad/starter ~/.config/nvim
 
 #SDDM
-pacman -Suy sddm qt5‑graphicaleffects qt5‑quickcontrols2 qt5‑svg --needed --noconfirm
+pacman -Suy sddm qt5-graphicaleffects qt5-quickcontrols2 qt5-svg --needed --noconfirm
 git clone https://github.com/Kangie/sddm-sugar-candy /usr/share/sddm/themes/sugar-candy
 mkdir /etc/sddm.conf.d/
 cat <<EOF > /etc/sddm.conf.d/theme.conf
