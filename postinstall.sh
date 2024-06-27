@@ -15,10 +15,11 @@ git config --global credential.credentialStore cache
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 #Creation... it's a one time thing that i already did so including it for historical reference
+#default is to pull dotfiles
 creation=false
 
 cd ~
-if ["$creation" = true] ; then
+if $creation ; then
     git init --bare $HOME/.dotfiles
     dotfiles branch -M main
 else
@@ -32,6 +33,20 @@ cd ~
 dotfiles clone https://github.com/witchwrenna/arch
 
 
+# Do other stuff
+# Install yay for AUR access, which also gives vesktop
+pacman -S --needed --noconfirm git base-devel && git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin && makepkg -si
+yay -Y --gendb
+yay -Syu --devel
+yay -Y --devel --save
+
+#Using yay to get vesktop
+yes | yay -S vesktop --noconfirm --answerclean All --answerdiff All 
+
+read -p "did yay and vestop compile correctly? check about to verify" 
+
+
+rm /postinstall.sh
 
 
 

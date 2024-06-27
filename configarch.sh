@@ -1,9 +1,17 @@
 #!/usr/bin/env bash
 
-groupadd witches
-useradd -m -g witches -s /bin/zsh lilith
-usermod -aG wheel,storage,audio,video lilith
-echo lilith:lilith | chpasswd
+#These variables get passed by main. Modify main.sh to change these variables
+diskid=$1
+efi=$2
+root=$3
+user=$4
+group=$5
+
+groupadd $group
+sed -i 's/SHELL=.*/SHELL=/usr/bin/zsh/' /etc/default/useradd
+useradd -m -g $group -s /bin/zsh $user
+usermod -aG wheel,storage,audio,video $user
+echo $user:$user | chpasswd
 sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
 
 #Let's enable parallel downloads, colours, and sync the latest stuff :3
@@ -98,7 +106,7 @@ cp /usr/share/refind/drivers_x64/btrfs_x64.efi /boot/efi/EFI/refind/drivers_x64/
 
 git clone https://github.com/evanpurkhiser/rEFInd-minimal /boot/efi/EFI/refind/themes/rEFInd-minimal/
 
-efibootmgr --create --disk /dev/disk/by-id/nvme-eui.002538414143a0a5 --part 1 --loader /EFI/refind/refind_x64.efi --label "DemonBoot" --unicode
+efibootmgr --create --disk $diskid --part 1 --loader /EFI/refind/refind_x64.efi --label "DemonBoot" --unicode
 cp -r /usr/share/refind/icons /boot/efi/EFI/refind/
 
 #create $UUID from fstab because UUID changes after mkfs
@@ -170,14 +178,15 @@ echo "--------------------------------------"
 pacman -S hyfetch man htop bat neovim nano less fzf --noconfirm --needed
 
 #zsh rice
-pacman -S ttf-firecode-nerd starship eza zsh-syntax-highlighting zsh-autosuggestions --noconfirm -needed
+pacman -S ttf-firacode-nerd starship eza zsh-syntax-highlighting zsh-autosuggestions --noconfirm -needed
 
 #firefox setup
 # Actually everything gets transferred with the sync option so i'm not doing anything in this script
 pacman -S firefox --noconfirm --needed
 
 #install nvchad
-git clone https://github.com/NvChad/starter ~/.config/nvim
+# doesn't work need to do it
+# git clone https://github.com/NvChad/starter ~/.config/nvim
 
 #SDDM
 pacman -Suy sddm qt5-graphicaleffects qt5-quickcontrols2 qt5-svg --needed --noconfirm
@@ -190,20 +199,8 @@ EOF
 
 systemctl enable sddm.service
 
-#Install yay for AUR access
-#Actually can't do this because makepg doesn't let sudo happen
-# pacman -S --needed --noconfirm git base-devel && git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin && makepkg -si
-# yay -Y --gendb
-# yay -Syu --devel
-# yay -Y --devel --save
-
-# #Using yay to get vesktop
-# yes | yay -S vesktop --noconfirm --answerclean All --answerdiff All 
-
-read -p "did yay and vestop compile correctly? check about to verify" 
-
 #Fix permission issues caused by using chroot
-chown -hR lilith:witches /home/lilith
+chown -v -hR $user:$group /home/$user
 
 echo "-------------------------------------------------"
 echo "Install Complete, You can reboot now"

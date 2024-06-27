@@ -1,34 +1,38 @@
 #!/usr/bin/env bash
-
 curl -LO https://github.com/witchwrenna/arch/archive/master.zip
 pacman -Sy unzip --noconfirm --needed
 unzip -o ~/master.zip
-sh arch-main/installarch.sh
 
-#Copy over scripts to prepare for chroot
-mv arch-main/configgit.sh /mnt/configgit.sh
-mv arch-main/configarch.sh /mnt/configarch.sh
+#settings variables. Modify these if your environment is different
+user="lilith"
+group="witches"
 
-#Customize the OS!
-arch-chroot /mnt sh configarch.sh
+diskid="/dev/disk/by-id/nvme-eui.002538414143a0a5"
+efi="/dev/disk/by-id/nvme-eui.002538414143a0a5-part1"
+root="/dev/disk/by-id/nvme-eui.002538414143a0a5-part2"
+
+sh arch-main/installarch.sh $diskid $efi $root
+
+#Let's get chroot going
+mv arch-main/configarch.sh /mnt/configarch.sh 
+arch-chroot /mnt sh configarch.sh $diskid $efi $root $user $group
+
+#This stuff will run on first boot
+mv arch-main/postinstall.sh /mnt/home/$user/postinstall.sh
 
 #Copying over basic config stuff needed for nvidia support
-mkdir -p /mnt/home/lilith/.config/hypr/
-mv arch-main/config/hyprland.conf /mnt/home/lilith/.config/hypr/hyprland.conf
+mkdir -p /mnt/home/$user/.config/hypr/
+mv arch-main/config/hyprland.conf /mnt/home/$user/.config/hypr/hyprland.conf
 
 mkdir -p /mnt/boot/efi/EFI/refind/
 mv arch-main/config/refind.conf /mnt/boot/efi/EFI/refind/refind.conf
 
-
-
-#Get dotfiles sync support up
-
-#disabling because needs to be run as user?
-# arch-chroot /mnt sh /configgit.sh
+# Get dotfiles sync support up
+# disabling because needs to be run as user?
+# arch-chroot /mnt sh /postinstall.sh
 
 # clean up after done or the files stay after booting
-# rm /mnt/configgit.sh
-rm /mnt/configarch.sh
+# rm /mnt/postinstall.sh
 
 # todo: 
 # Git script does not apply alias and config changes because of chroot?
@@ -70,3 +74,7 @@ rm /mnt/configarch.sh
 
 #resolvd symblink didn't work - busy??
 # ln: failed to create symbolic link '/etc/resolv.conf': Device or resource busy
+
+#chown doesn't seem to work?
+#maybe add postinstall to exec-once for hyprland, and then include rm-ing itself and removing the line
+#ZSH colour variables are black??

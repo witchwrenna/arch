@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
 
+diskid=$1
+efi=$2
+root=$3
+
 # BIG FUCKING WARNING
-#Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE
+#Partitions are hard coded to my 4TB nvme drive in main.sh!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE
 
 echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! IF YOU ARE NOT WREN THEN YOU NEED TO UPDATE THE SCRIPT"
 echo -e "\nIf you didn't manually format your drive and create your partitions and update the script variables, you HAVE to do this now or this script will fail"
 echo -e "\nCheck the script comments and understand what it's doing."
 echo -e "\nThis is NOT a general installation script, it is hard coded to my computer and preferences"
+echo -e "Update main.sh with the right variables if you don't wanna do something fucky"
 read -p "Press enter if you think everything is good!"
 
 # disable secureboot for dualbooting?
@@ -55,19 +60,18 @@ echo -e "\nCreating Filesystems...\nactually you gotta do this yourself, loser\n
 
 echo -e "\nSettings filesystem to BTRFS\n"
 
-EFI="/dev/disk/by-id/nvme-eui.002538414143a0a5-part1"
-ROOT="/dev/disk/by-id/nvme-eui.002538414143a0a5-part2"
+
 
 #Unmount if already mounted (eg runnning script twice)
 swapoff /mnt/swap/swapfile
 umount /mnt/boot/efi
 umount /mnt
 
-mkfs.vfat -F32 -n "EFI" "${EFI}"
-mkfs.btrfs -L "Root" -f "${ROOT}"
+mkfs.vfat -F32 -n "EFI" "${efi}"
+mkfs.btrfs -L "Root" -f "${root}"
 
 #get started creating btrfs subvolumes
-mount "${ROOT}" /mnt
+mount "${root}" /mnt
 
 #Set up btrfs subvolumes
 btrfs subvolume create /mnt/@
@@ -83,13 +87,13 @@ umount /mnt
 # noatime stops reading metadata all the time, increases speed
 # compression to save space
 # space cache improves more performance to know where are free blocks
-mount -o noatime,ssd,space_cache=v2,compress=zstd,discard=async,subvol=@ "${ROOT}" /mnt
+mount -o noatime,ssd,space_cache=v2,compress=zstd,discard=async,subvol=@ "${root}" /mnt
 
 mkdir -p /mnt/home /mnt/.snapshots /mnt/var/log /mnt/var/cache
-mount -o noatime,ssd,space_cache=v2,compress=zstd,discard=async,subvol=@home "${ROOT}" /mnt/home
-mount -o noatime,ssd,space_cache=v2,compress=zstd,discard=async,subvol=@snapshots "${ROOT}" /mnt/.snapshots
-mount -o noatime,ssd,space_cache=v2,compress=zstd,discard=async,subvol=@var_log "${ROOT}" /mnt/var/log
-mount -o noatime,ssd,space_cache=v2,compress=zstd,discard=async,subvol=@var_cache "${ROOT}" /mnt/var/cache
+mount -o noatime,ssd,space_cache=v2,compress=zstd,discard=async,subvol=@home "${root}" /mnt/home
+mount -o noatime,ssd,space_cache=v2,compress=zstd,discard=async,subvol=@snapshots "${root}" /mnt/.snapshots
+mount -o noatime,ssd,space_cache=v2,compress=zstd,discard=async,subvol=@var_log "${root}" /mnt/var/log
+mount -o noatime,ssd,space_cache=v2,compress=zstd,discard=async,subvol=@var_cache "${root}" /mnt/var/cache
 
 # The idea is to mount the EFI partition to /boot/efi directory
 # in this way /boot still use btrfs filesystem and /boot/efi use vfat filesystem,
@@ -97,7 +101,7 @@ mount -o noatime,ssd,space_cache=v2,compress=zstd,discard=async,subvol=@var_cach
 # so no problems with the restores because kernel, libraries and all the system are always "synchronized" 
 # mount target
 mkdir -p /mnt/boot/efi
-mount -t vfat "${EFI}" /mnt/boot/efi
+mount -t vfat "${efi}" /mnt/boot/efi
 
 echo -e "\nCreating Swap File\n"
 
