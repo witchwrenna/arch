@@ -6,9 +6,10 @@ usermod -aG wheel,storage,audio,video lilith
 echo lilith:lilith | chpasswd
 sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
 
-#Let's enable parallel downloads :3
+#Let's enable parallel downloads, colours, and sync the latest stuff :3
 sed -i 's/#ParallelDownloads.*/ParallelDownloads=10/' /etc/pacman.conf
 sed -i '/color/s/^#//g' /etc/pacman.conf
+pacman -Sy
 
 systemctl enable fstrim.timer
 
@@ -167,7 +168,7 @@ echo "--------------------------------------"
 #This section is i think a little more custom and changable... maybe future reruns could use just this section?
 
 #assorted utilities
-pacman -S hyfetch man htop bat sudo neovim nano less fzf --noconfirm --needed
+pacman -S hyfetch man htop bat neovim nano less fzf --noconfirm --needed
 
 #zsh rice
 pacman -S ttf-firecode-nerd starship eza zsh-syntax-highlighting zsh-autosuggestions --noconfirm -needed
@@ -182,6 +183,7 @@ git clone https://github.com/NvChad/starter ~/.config/nvim
 #SDDM
 pacman -S sddm qt5‑graphicaleffects qt5‑quickcontrols2 qt5‑svg --needed --noconfirm
 git clone https://github.com/Kangie/sddm-sugar-candy /usr/share/sddm/themes/sugar-candy
+mkdir /etc/sddm.conf.d/
 cat <<EOF > /etc/sddm.conf.d/theme.conf
 [Theme]
 Current=sugar-candy
@@ -190,7 +192,7 @@ EOF
 systemctl enable sddm.service
 
 #Install yay for AUR access
-pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin && makepkg -si
+pacman -S --needed --noconfirm git base-devel && git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin && makepkg -si
 yay -Y --gendb
 yay -Syu --devel
 yay -Y --devel --save
