@@ -15,7 +15,7 @@ echo "Setup user and group"
 echo "-------------------------------------------------"
 
 groupadd $group
-sed -i 's/SHELL=.*/SHELL=/usr/bin/zsh/' /etc/default/useradd
+sed -i 's|SHELL=.*|SHELL=/usr/bin/zsh|' /etc/default/useradd
 useradd -m -g $group -s /bin/zsh $user
 usermod -aG wheel,storage,audio,video $user
 echo $user:$user | chpasswd
