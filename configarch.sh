@@ -206,7 +206,7 @@ systemctl enable sddm.service
 #Get yay working with a hacky workaround because root can't makepkg
 #this is pretty hacky lol
 #all for using vesktop...
-pacman -S --needed --noconfirm git base-devel
+pacman -S --needed --noconfirm base-devel
 
 usermod -aG wheel nobody
 sed -i 's|%wheel ALL=(ALL:ALL) ALL|%wheel ALL=(ALL:ALL) ALL NOPASSWD: /usr/bin/pacman,/usr/bin/yay|' /etc/sudoers
@@ -227,8 +227,9 @@ yay -Y --devel --save
 
 yes | yay -S vesktop --noconfirm --answerclean All --answerdiff All 
 
+#undo this monstrosity
 sed -i 's|^%wheel ALL=(ALL:ALL) ALL NOPASSWD: /usr/bin/pacman,/usr/bin/yay|%wheel ALL=(ALL:ALL) ALL|' /etc/sudoers
-
+usermod -G nobody nobody        
 rm -rf /home/build
 
 #Fix permission issues caused by using chroot
