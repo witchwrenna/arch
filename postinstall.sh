@@ -32,24 +32,6 @@ dotfiles config --local status.showUntrackedFiles no
 cd ~
 dotfiles clone https://github.com/witchwrenna/arch
 
-
-# Do other stuff
-# Install yay for AUR access, which also gives vesktop
-pacman -S --needed --noconfirm git base-devel && git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin && makepkg -si
-yay -Y --gendb
-yay -Syu --devel
-yay -Y --devel --save
-
-#Using yay to get vesktop
-yes | yay -S vesktop --noconfirm --answerclean All --answerdiff All 
-
-read -p "did yay and vestop compile correctly? check about to verify" 
-
-
-rm /postinstall.sh
-
-
-
 # To add stuff...
 # dotfiles add $Filename
 # dotfiles commit -m "Updating file!"
@@ -58,3 +40,6 @@ rm /postinstall.sh
 # other commands
 # dotfiles status
 # dotfiles checkout
+
+
+rm /postinstall.sh

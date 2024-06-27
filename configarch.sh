@@ -16,7 +16,10 @@ sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
 
 #Let's enable parallel downloads, colours, and sync the latest stuff :3
 sed -i 's/#ParallelDownloads.*/ParallelDownloads=10/' /etc/pacman.conf
-sed -i '/color/s/^#//g' /etc/pacman.conf
+sed -i '/Color/s/^#//g' /etc/pacman.conf
+echo "ILoveCandy" >> /etc/pacman.conf
+
+pacman -S base-devel --needed --noconfirm #for AUR
 
 
 systemctl enable fstrim.timer
@@ -199,7 +202,37 @@ EOF
 
 systemctl enable sddm.service
 
+
+#Get yay working with a hacky workaround because root can't makepkg
+#this is pretty hacky lol
+#all for using vesktop...
+pacman -S --needed --noconfirm git base-devel
+
+usermod -aG wheel nobody
+sed -i 's|%wheel ALL=(ALL:ALL) ALL|%wheel ALL=(ALL:ALL) ALL NOPASSWD: /usr/bin/pacman,/usr/bin/yay|' /etc/sudoers
+
+mkdir /home/build
+chgrp nobody /home/build
+chmod g+ws /home/build
+setfacl -m u::rwx,g::rwx /home/build
+setfacl -d --set u::rwx,g::rwx,o::- /home/build
+git clone https://aur.archlinux.org/yay-bin.git /home/build 
+chmod -R g+w /home/build/yay-bin/
+cd /home/build/yay-bin/
+
+sudo -u nobody makepkg -si
+yay -Y --gendb
+yay -Syu --devel
+yay -Y --devel --save
+
+yes | yay -S vesktop --noconfirm --answerclean All --answerdiff All 
+
+sed -i 's|^%wheel ALL=(ALL:ALL) ALL NOPASSWD: /usr/bin/pacman,/usr/bin/yay|%wheel ALL=(ALL:ALL) ALL|' /etc/sudoers
+
+rm -rf /home/build
+
 #Fix permission issues caused by using chroot
+#doesn't seem to work so using -v
 chown -v -hR $user:$group /home/$user
 
 echo "-------------------------------------------------"
