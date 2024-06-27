@@ -55,3 +55,10 @@ rm /mnt/configarch.sh
 
 #example of firefox config
 # https://github.com/sameemul-haque/dotfiles/tree/mocha/.whiteSur-firefox-theme
+
+# try this theme lol
+# https://github.com/Naezr/ShyFox/blob/main/showcase.md
+
+#more dots to check out
+# https://github.com/Naezr/ShyFox/blob/main/showcase.md
+# 
