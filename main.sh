@@ -62,3 +62,5 @@ rm /mnt/configarch.sh
 #more dots to check out
 # https://github.com/Naezr/ShyFox/blob/main/showcase.md
 # 
+
+#swap caps lock key in hyprland
