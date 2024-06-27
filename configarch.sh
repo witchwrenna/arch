@@ -137,6 +137,15 @@ include themes/rEFInd-minimal/theme.conf
 STANZA
 
 echo "-------------------------------------------------"
+echo "Setting up audio"
+echo "-------------------------------------------------"
+
+pacman -S pipewire pipewire-audio pipewire-pulse pipewire-alsa pipewire-jack wireplumber --noconfirm --needed
+systemctl --user enable pipewire pipewire-pulse wireplumber
+
+# read -p "pausing... press enter to continue"
+
+echo "-------------------------------------------------"
 echo "Installing wayland + hyprland"
 echo "-------------------------------------------------"
 
@@ -149,15 +158,6 @@ mkinitcpio -P
 #Check for errors of missing nvidia headers or whatever after mkinicpio
 
 
-
-# read -p "pausing... press enter to continue"
-
-echo "-------------------------------------------------"
-echo "Setting up audio"
-echo "-------------------------------------------------"
-
-pacman -S pipewire pipewire-audio pipewire-pulse pipewire-alsa pipewire-jack wireplumber --noconfirm --needed
-systemctl --user enable pipewire pipewire-pulse wireplumber
 
 # read -p "pausing... press enter to continue"
 

@@ -64,3 +64,6 @@ rm /mnt/configarch.sh
 # 
 
 #swap caps lock key in hyprland
+
+#resolvd symblink didn't work - busy??
+# ln: failed to create symbolic link '/etc/resolv.conf': Device or resource busy
