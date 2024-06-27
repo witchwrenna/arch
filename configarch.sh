@@ -173,6 +173,7 @@ pacman -S hyfetch man htop bat sudo neovim nano less fzf --noconfirm --needed
 pacman -S ttf-firecode-nerd starship eza zsh-syntax-highlighting zsh-autosuggestions --noconfirm -needed
 
 #firefox setup
+# Actually everything gets transferred with the sync option so i'm not doing anything in this script
 pacman -S firefox --noconfirm --needed
 
 #install nvchad
