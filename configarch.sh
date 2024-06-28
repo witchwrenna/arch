@@ -258,6 +258,7 @@ ls -la /home/lilith/
 
 ls -la
 
+echo "who am I???"
 whoami
 
 
