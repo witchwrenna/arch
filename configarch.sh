@@ -252,15 +252,6 @@ echo "-------------------------------------------------"
 #doesn't seem to work so using -v
 chown -v -hR $user:$group /home/$user/
 
-echo "chown -v -hR $user:$group /home/$user/"
-
-ls -la /home/lilith/
-
-ls -la
-
-echo "who am I???"
-whoami
-
 
 echo "-------------------------------------------------"
 echo "Install Complete, You can reboot now"

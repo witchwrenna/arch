@@ -14,6 +14,10 @@ root="/dev/disk/by-id/nvme-eui.002538414143a0a5-part2"
 #Disk setup and main kernal install
 sh arch-main/installarch.sh $diskid $efi $root
 
+#Copying over basic config stuff needed for nvidia support + postinstall run
+mkdir -p /mnt/home/$user/.config/hypr/
+mv arch-main/config/hyprland.conf /mnt/home/$user/.config/hypr/hyprland.conf
+
 #Let's get chroot going to configure arch my way
 mv arch-main/configarch.sh /mnt/configarch.sh 
 arch-chroot /mnt sh configarch.sh $diskid $efi $root $user $group
@@ -21,9 +25,8 @@ arch-chroot /mnt sh configarch.sh $diskid $efi $root $user $group
 #This stuff will run on first boot through hyprland.conf
 mv arch-main/postinstall.sh /mnt/home/$user/postinstall.sh
 
-#Copying over basic config stuff needed for nvidia support + postinstall run
-mkdir -p /mnt/home/$user/.config/hypr/
-mv arch-main/config/hyprland.conf /mnt/home/$user/.config/hypr/hyprland.conf
+
+
 
 #Copying refind configuration
 #mkdir -p /mnt/boot/efi/EFI/refind/
