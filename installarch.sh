@@ -7,12 +7,12 @@ root=$3
 # BIG FUCKING WARNING
 #Partitions are hard coded to my 4TB nvme drive in main.sh!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE
 
-echo -e "Partitions are hard coded to my 4TB nvme drive!!!!!!!!!!! IF YOU ARE NOT WREN THEN YOU NEED TO UPDATE THE SCRIPT"
+echo -e "\nPartitions are hard coded to my 4TB nvme drive!!!!!!!!!!! IF YOU ARE NOT WREN THEN YOU NEED TO UPDATE THE SCRIPT"
 echo -e "\nIf you didn't manually format your drive and create your partitions and update the script variables, you HAVE to do this now or this script will fail"
 echo -e "\nCheck the script comments and understand what it's doing."
 echo -e "\nThis is NOT a general installation script, it is hard coded to my computer and preferences"
-echo -e "Update main.sh with the right variables if you don't wanna do something fucky"
-read -p "Press enter if you think everything is good!"
+echo -e "\nUpdate main.sh with the right variables if you don't wanna do something fucky"
+read -p "\n\nPress enter if you think everything is good!"
 
 # disable secureboot for dualbooting?
 # Not sure how to check what device is going to be what
