@@ -9,7 +9,6 @@ group=$5
 
 systemctl enable fstrim.timer
 
-
 echo "-------------------------------------------------"
 echo "Setup user and group"
 echo "-------------------------------------------------"
@@ -84,8 +83,7 @@ systemctl enable systemd-networkd.service
 systemctl enable systemd-resolved.service 
 
 #Do this to avoid fucky DNS stuff
-ln -sf ../run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
-
+ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
 
 echo "-------------------------------------------------"
 echo "Installing display Drivers"
@@ -97,14 +95,18 @@ pacman -S nvidia nvidia-utils nvidia-settings libva-nvidia-driver --noconfirm --
 
 
 echo "-------------------------------------------------"
-echo "Setting up REFIND"
+echo "Setting up GRUB"
 echo "-------------------------------------------------"
+
+git clone https://github.com/Coopydood/HyperFluent-GRUB-Theme/ /usr/share/grub/themes/hyperfluent/
+
 pacman -S grub efibootmgr dosfstools mtools os-prober --noconfirm --needed
 #need to mount windows to see stuff
 mount /dev/disk/by-id/nvme-eui.002538592140e412-part2 /mnt/win11
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id="DemonBoot"
 sed -i 's/^#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' /etc/default/grub
-sed -i '/.*^GRUB_CMDLINE_LINUX_DEFAULT=.*/ c\GRUB_CMDLINE_LINUX_DEFAULT="quiet loglevel=3 nvidia_drm.modeset=1/"' /etc/default/grub
+sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT=.*/ c\GRUB_CMDLINE_LINUX_DEFAULT="quiet loglevel=3 nvidia_drm.modeset=1/"' /etc/default/grub
+sed -i 's|^#GRUB_THEME.*|GRUB_THEME=/usr/share/grub/themes/hyperfluent/arch/theme.txt|' /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # pacman -S refind efibootmgr --noconfirm --needed
