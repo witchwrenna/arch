@@ -28,7 +28,9 @@ echo "-------------------------------------------------"
 #Let's enable parallel downloads, colours, and sync the latest stuff :3
 sed -i 's/#ParallelDownloads.*/ParallelDownloads=10/' /etc/pacman.conf
 sed -i '/Color/s/^#//g' /etc/pacman.conf
-echo "ILoveCandy" >> /etc/pacman.conf
+
+#lol
+#echo "ILoveCandy" >> /etc/pacman.conf
 
 pacman -S base-devel --needed --noconfirm #for AUR
 
