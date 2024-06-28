@@ -8,7 +8,7 @@ user=$4
 group=$5
 
 systemctl enable fstrim.timer
-# systemctl enable reflector.timer
+
 
 echo "-------------------------------------------------"
 echo "Setup user and group"
@@ -32,8 +32,9 @@ sed -i '/Color/s/^#//g' /etc/pacman.conf
 #lol
 #echo "ILoveCandy" >> /etc/pacman.conf
 
-pacman -S base-devel --needed --noconfirm #for AUR
+pacman -S base-devel reflector --needed --noconfirm #for AUR
 
+systemctl enable reflector.timer
 
 echo "-------------------------------------------------"
 echo "Setup Language to US and set locale"
@@ -159,6 +160,17 @@ read -p "cancel out here"
 # include themes/rEFInd-minimal/theme.conf
 # STANZA
 
+echo "include themes/rEFInd-minimal/theme.conf" >> /boot/efi/EFI/refind/refind.conf
+
+
+echo "-------------------------------------------------"
+echo "Setting up snapshots"
+echo "-------------------------------------------------"
+
+pacman -S timeshift --noconfirm --needed
+
+
+
 echo "-------------------------------------------------"
 echo "Setting up audio"
 echo "-------------------------------------------------"
@@ -172,7 +184,7 @@ echo "Installing wayland + hyprland"
 echo "-------------------------------------------------"
 
 #Following https://wiki.hyprland.org/Nvidia/
-pacman -S egl-wayland hyprland waybar kitty polkit polkit-kde-agent xdg-desktop-portal-hyprland xdg-desktop-portal-gtk qt5-wayland qt6-wayland --noconfirm --needed
+pacman -S egl-wayland hyprland waybar wofi kitty polkit polkit-kde-agent xdg-desktop-portal-hyprland xdg-desktop-portal-gtk qt5-wayland qt6-wayland --noconfirm --needed
 
 sed -i 's/^MODULES=()/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
 echo "options nvidia_drm modeset=1 fbdev=1" > /etc/modprobe.d/nvidia.conf
@@ -201,7 +213,7 @@ echo "-- Installing the important stuff --"
 echo "--------------------------------------"
 
 #assorted utilities
-pacman -S hyfetch man htop bat neovim nano less fzf --noconfirm --needed
+pacman -S hyfetch man htop bat neovim nano less fzf openssh --noconfirm --needed
 
 #zsh rice
 pacman -S ttf-firacode-nerd starship eza zsh-syntax-highlighting zsh-autosuggestions --noconfirm -needed
@@ -223,26 +235,30 @@ echo "--------------------------------------"
 pacman -S --needed --noconfirm base-devel
 
 usermod -aG wheel nobody
-sed -i 's|%wheel ALL=(ALL:ALL) ALL|%wheel ALL=(ALL:ALL) ALL NOPASSWD: /usr/bin/pacman,/usr/bin/yay|' /etc/sudoers
+sed -i 's|# %wheel ALL=(ALL:ALL) NOPASSWD: ALL|%wheel ALL=(ALL:ALL) NOPASSWD: ALL|' /etc/sudoers
 
 mkdir /home/build
 chgrp nobody /home/build
 chmod g+ws /home/build
 setfacl -m u::rwx,g::rwx /home/build
 setfacl -d --set u::rwx,g::rwx,o::- /home/build
-git clone https://aur.archlinux.org/yay-bin.git /home/build 
+git clone https://aur.archlinux.org/yay-bin.git /home/build/yay-bin
 chmod -R g+w /home/build/yay-bin/
 cd /home/build/yay-bin/
 
-sudo -u nobody makepkg -si
-yay -Y --gendb
+sudo -u nobody makepkg -si --noconfirm
+#yay -Y --gendb #can't get this to work in chroot, but only applies to packages that are *-git anyway
 yay -Syu --devel
 yay -Y --devel --save
 
+#best discord client in 2024
 yes | yay -S vesktop --noconfirm --answerclean All --answerdiff All 
 
+#Make snapshots happen on running pacman
+yes | yay -S timeshift-autosnap --noconfirm --answerclean All --answerdiff All 
+
 #undo this monstrosity
-sed -i 's|^%wheel ALL=(ALL:ALL) ALL NOPASSWD: /usr/bin/pacman,/usr/bin/yay|%wheel ALL=(ALL:ALL) ALL|' /etc/sudoers
+sed -i 's|%wheel ALL=(ALL:ALL) ALL NOPASSWD|# %wheel ALL=(ALL:ALL) NOPASSWD: ALL|' /etc/sudoers
 usermod -G nobody nobody        
 rm -rf /home/build
 
