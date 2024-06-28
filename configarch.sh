@@ -269,7 +269,7 @@ echo "-------------------------------------------------"
 
 #Fix permission issues caused by using chroot
 #doesn't seem to work so using -v
-chown -v -hR $user:$group /home/$user
+chown -v -hR $user:$group /home/$user/
 
 
 echo "-------------------------------------------------"
