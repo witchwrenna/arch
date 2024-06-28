@@ -99,44 +99,44 @@ pacman -S nvidia nvidia-utils nvidia-settings libva-nvidia-driver --noconfirm --
 echo "-------------------------------------------------"
 echo "Setting up REFIND"
 echo "-------------------------------------------------"
-# pacman -S grub efibootmgr dosfstools mtools os-prober --noconfirm --needed
-# #need to mount windows to see stuff
-# mount /dev/disk/by-id/nvme-eui.002538592140e412-part2 /mnt/win11
-# grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id="DemonBoot"
-# sed -i 's/^#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' /etc/default/grub
-# sed -i '/.*^GRUB_CMDLINE_LINUX_DEFAULT=.*/ c\GRUB_CMDLINE_LINUX_DEFAULT="quiet loglevel=3 nvidia_drm.modeset=1/"' /etc/default/grub
-# grub-mkconfig -o /boot/grub/grub.cfg
+pacman -S grub efibootmgr dosfstools mtools os-prober --noconfirm --needed
+#need to mount windows to see stuff
+mount /dev/disk/by-id/nvme-eui.002538592140e412-part2 /mnt/win11
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id="DemonBoot"
+sed -i 's/^#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' /etc/default/grub
+sed -i '/.*^GRUB_CMDLINE_LINUX_DEFAULT=.*/ c\GRUB_CMDLINE_LINUX_DEFAULT="quiet loglevel=3 nvidia_drm.modeset=1/"' /etc/default/grub
+grub-mkconfig -o /boot/grub/grub.cfg
 
-pacman -S refind efibootmgr --noconfirm --needed
+# pacman -S refind efibootmgr --noconfirm --needed
 
-mkdir -p /boot/efi/EFI/refind
-cp /usr/share/refind/refind_x64.efi /boot/efi/EFI/refind/
-mkdir -p /boot/efi/EFI/refind/drivers_x64
-cp /usr/share/refind/drivers_x64/btrfs_x64.efi /boot/efi/EFI/refind/drivers_x64/
+# mkdir -p /boot/efi/EFI/refind
+# cp /usr/share/refind/refind_x64.efi /boot/efi/EFI/refind/
+# mkdir -p /boot/efi/EFI/refind/drivers_x64
+# cp /usr/share/refind/drivers_x64/btrfs_x64.efi /boot/efi/EFI/refind/drivers_x64/
 
-efibootmgr --create --disk $diskid --part 1 --loader /EFI/refind/refind_x64.efi --label "DemonBoot" --unicode
-cp -r /usr/share/refind/icons /boot/efi/EFI/refind/
+# efibootmgr --create --disk $diskid --part 1 --loader /EFI/refind/refind_x64.efi --label "DemonBoot" --unicode
+# cp -r /usr/share/refind/icons /boot/efi/EFI/refind/
 
 
-#create $UUID from fstab because UUID changes after mkfs
-read UUID <<< $(cat /etc/fstab | grep -A1 Root | grep UUID | awk -v col=1 '{print $col}' | cut -d "=" -f 2)
-PARTUUID=$(blkid -t UUID=$UUID -s PARTUUID -o value)
-echo "$PARTUUID"
+# #create $UUID from fstab because UUID changes after mkfs
+# read UUID <<< $(cat /etc/fstab | grep -A1 Root | grep UUID | awk -v col=1 '{print $col}' | cut -d "=" -f 2)
+# PARTUUID=$(blkid -t UUID=$UUID -s PARTUUID -o value)
+# echo "$PARTUUID"
 
-cat <<BOOT > /boot/refind_linux.conf
-"Boot using default options"     "root=PARTUUID=$PARTUUID rootflags=subvol=@ rw loglevel=3 quiet nvidia_drm.modeset=1"
-"Boot using fallback initramfs"  "root=PARTUUID=$PARTUUID rootflags=subvol=@ rw initrd=boot\initramfs-%v-fallback.img"
-"Boot to terminal"               "root=PARTUUID=$PARTUUID rootflags=subvol=@ rw systemd.unit=multi-user.target"
-BOOT
+# cat <<BOOT > /boot/refind_linux.conf
+# "Boot using default options"     "root=PARTUUID=$PARTUUID rootflags=subvol=@ rw loglevel=3 quiet nvidia_drm.modeset=1"
+# "Boot using fallback initramfs"  "root=PARTUUID=$PARTUUID rootflags=subvol=@ rw initrd=boot\initramfs-%v-fallback.img"
+# "Boot to terminal"               "root=PARTUUID=$PARTUUID rootflags=subvol=@ rw systemd.unit=multi-user.target"
+# BOOT
 
-#Get theme installed
-#modify refind.conf in config folder if changing theme
-git clone https://github.com/evanpurkhiser/rEFInd-minimal /boot/efi/EFI/refind/themes/rEFInd-minimal/
-cp /boot/efi/EFI/refind/themes/rEFInd-minimal/icons/os-arch.png /boot/vmlinuz-linux.png
+# #Get theme installed
+# #modify refind.conf in config folder if changing theme
+# git clone https://github.com/evanpurkhiser/rEFInd-minimal /boot/efi/EFI/refind/themes/rEFInd-minimal/
+# cp /boot/efi/EFI/refind/themes/rEFInd-minimal/icons/os-arch.png /boot/vmlinuz-linux.png
 
-cp /usr/share/refind/refind.conf-sample /boot/efi/EFI/refind/refind.conf
-sed -i '/extra_kernel_version_strings/s/^#//g' /boot/efi/EFI/refind/refind.conf
-sed -i '/enable_mouse/s/^#//g' /boot/efi/EFI/refind/refind.conf
+# cp /usr/share/refind/refind.conf-sample /boot/efi/EFI/refind/refind.conf
+# sed -i '/extra_kernel_version_strings/s/^#//g' /boot/efi/EFI/refind/refind.conf
+# sed -i '/enable_mouse/s/^#//g' /boot/efi/EFI/refind/refind.conf
 
 
 #echo "include themes/rEFInd-minimal/theme.conf" >> /boot/efi/EFI/refind/refind.conf
@@ -253,6 +253,8 @@ chown -v -hR $user:$group /home/$user/
 echo "chown -v -hR $user:$group /home/$user/"
 
 ls -la /home/lilith/
+
+ls -la
 
 
 echo "-------------------------------------------------"

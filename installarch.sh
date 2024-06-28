@@ -12,7 +12,7 @@ echo -e "\nIf you didn't manually format your drive and create your partitions a
 echo -e "\nCheck the script comments and understand what it's doing."
 echo -e "\nThis is NOT a general installation script, it is hard coded to my computer and preferences"
 echo -e "\nUpdate main.sh with the right variables if you don't wanna do something fucky"
-read -p "\n\nPress enter if you think everything is good!"
+read -p "Press enter if you think everything is good!"
 
 # disable secureboot for dualbooting?
 # Not sure how to check what device is going to be what

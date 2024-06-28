@@ -26,8 +26,8 @@ mkdir -p /mnt/home/$user/.config/hypr/
 mv arch-main/config/hyprland.conf /mnt/home/$user/.config/hypr/hyprland.conf
 
 #Copying refind configuration
-mkdir -p /mnt/boot/efi/EFI/refind/
-mv arch-main/config/refind.conf /mnt/boot/efi/EFI/refind/refind.conf
+#mkdir -p /mnt/boot/efi/EFI/refind/
+#mv arch-main/config/refind.conf /mnt/boot/efi/EFI/refind/refind.conf
 
 # todo: 
 # Git script does not apply alias and config changes because of chroot?
