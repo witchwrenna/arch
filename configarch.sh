@@ -256,6 +256,8 @@ ls -la /home/lilith/
 
 ls -la
 
+whoami
+
 
 echo "-------------------------------------------------"
 echo "Install Complete, You can reboot now"
