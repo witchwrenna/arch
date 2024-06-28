@@ -197,7 +197,7 @@ echo "--------------------------------------"
 pacman -S hyfetch man htop bat neovim nano less fzf openssh --noconfirm --needed
 
 #zsh rice
-pacman -S ttf-firacode-nerd starship eza zsh-syntax-highlighting zsh-autosuggestions --noconfirm -needed
+pacman -S ttf-firacode-nerd starship eza zsh-syntax-highlighting zsh-autosuggestions --noconfirm --needed
 
 #firefox
 pacman -S firefox --noconfirm --needed

@@ -26,8 +26,6 @@ arch-chroot /mnt sh configarch.sh $diskid $efi $root $user $group
 mv arch-main/postinstall.sh /mnt/home/$user/postinstall.sh
 
 
-
-
 #Copying refind configuration
 #mkdir -p /mnt/boot/efi/EFI/refind/
 #mv arch-main/config/refind.conf /mnt/boot/efi/EFI/refind/refind.conf

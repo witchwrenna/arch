@@ -28,7 +28,7 @@ fi
 dotfiles config --local status.showUntrackedFiles no
 
 cd ~
-dotfiles clone https://github.com/witchwrenna/arch
+dotfiles clone https://github.com/witchwrenna/arch $HOME/arch
 
 # To add stuff...
 # dotfiles add $Filename
@@ -40,4 +40,4 @@ dotfiles clone https://github.com/witchwrenna/arch
 # dotfiles checkout
 
 #cleanup after itself
-rm /postinstall.sh
+rm $HOME/postinstall.sh
