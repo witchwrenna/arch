@@ -138,23 +138,6 @@ cp /usr/share/refind/refind.conf-sample /boot/efi/EFI/refind/refind.conf
 sed -i '/extra_kernel_version_strings/s/^#//g' /boot/efi/EFI/refind/refind.conf
 sed -i '/enable_mouse/s/^#//g' /boot/efi/EFI/refind/refind.conf
 
-cat <<STANZA >> /boot/efi/EFI/refind/refind.conf
-menuentry "Arch Linux" {
-	icon     /EFI/refind/themes/rEFInd-minimal/icons/os_arch.png
-	volume   "Root"
-	loader   /boot/vmlinuz-linux 
-	initrd   /boot/initramfs-linux.img
-	options  "root=PARTUUID=$PARTUUID rootflags=subvol=@ rw loglevel=3 quiet nvidia_drm.modeset=1"
-	submenuentry "Boot using fallback initramfs" {
-		initrd /boot/initramfs-linux-fallback.img
-	}
-	submenuentry "Boot to terminal" {
-		add_options "systemd.unit=multi-user.target"
-	}
-}
-
-include themes/rEFInd-minimal/theme.conf
-STANZA
 
 #echo "include themes/rEFInd-minimal/theme.conf" >> /boot/efi/EFI/refind/refind.conf
 
