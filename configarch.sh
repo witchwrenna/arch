@@ -250,6 +250,8 @@ echo "-------------------------------------------------"
 #doesn't seem to work so using -v
 chown -v -hR $user:$group /home/$user/
 
+echo "chown -v -hR $user:$group /home/$user/"
+
 ls -la /home/lilith/
 
 
