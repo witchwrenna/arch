@@ -252,10 +252,10 @@ yay -Syu --devel
 yay -Y --devel --save
 
 #best discord client in 2024
-yes | yay -S vesktop --noconfirm --answerclean All --answerdiff All 
+sudo sh -c "yes | yay -S vesktop --noconfirm --answerclean All --answerdiff All" -u nobody
 
 #Make snapshots happen on running pacman
-yes | yay -S timeshift-autosnap --noconfirm --answerclean All --answerdiff All 
+sudo sh -c "yes | yay -S timeshift-autosnap --noconfirm --answerclean All --answerdiff All" -u nobody
 
 #undo this monstrosity
 sed -i 's|%wheel ALL=(ALL:ALL) ALL NOPASSWD|# %wheel ALL=(ALL:ALL) NOPASSWD: ALL|' /etc/sudoers
