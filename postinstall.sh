@@ -28,7 +28,7 @@ fi
 dotfiles config --local status.showUntrackedFiles no
 
 cd ~
-dotfiles clone https://github.com/witchwrenna/arch $HOME/arch
+git clone https://github.com/witchwrenna/arch $HOME/arch
 
 # To add stuff...
 # dotfiles add $Filename

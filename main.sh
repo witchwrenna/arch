@@ -20,10 +20,10 @@ mv arch-main/config/hyprland.conf /mnt/home/$user/.config/hypr/hyprland.conf
 
 #Let's get chroot going to configure arch my way
 mv arch-main/configarch.sh /mnt/configarch.sh 
+mv arch-main/postinstall.sh /mnt/home/$user/postinstall.sh
 arch-chroot /mnt sh configarch.sh $diskid $efi $root $user $group
 
 #This stuff will run on first boot through hyprland.conf
-mv arch-main/postinstall.sh /mnt/home/$user/postinstall.sh
 
 
 #Copying refind configuration
