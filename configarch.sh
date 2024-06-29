@@ -213,9 +213,9 @@ sudo -u nobody yay -Y --devel --save
 #sudo -u nobody yay -S vesktop --noconfirm --answerclean All --answerdiff None -u nobody
 
 #Make snapshots happen on running pacman
-sudo -u nobody yay -S timeshift-autosnap --noconfirm --answerclean All --answerdiff All -u nobody
+sudo -u nobody yay -S timeshift-autosnap --noconfirm --answerclean All --answerdiff None -u nobody
 
-sudo -u nobody yay -S ttf-ms-win11-auto --noconfirm --answerclean All --answerdiff All -u nobody 
+sudo -u nobody yay -S ttf-ms-win11-auto --noconfirm --answerclean All --answerdiff None -u nobody 
 
 read -p "did this work ctrl + c to cancel early and stop the cleanup?"
 
