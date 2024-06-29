@@ -239,17 +239,17 @@ cd /home/build/yay-bin/
 
 sudo -u nobody makepkg -si --noconfirm
 #yay -Y --gendb #can't get this to work in chroot, but only applies to packages that are *-git anyway
-yay -Syu --devel
-yay -Y --devel --save
+sudo -u nobody yay -Syu --devel
+sudo -u nobody yay -Y --devel --save
 
 #best discord client in 2024
-sudo sh -c "yes | yay -S vesktop --noconfirm --answerclean All --answerdiff All" -u nobody
+sudo -u nobody yay -S vesktop --noconfirm --answerclean All --answerdiff All -u nobody
 
 #Make snapshots happen on running pacman
-sudo sh -c "yes | yay -S timeshift-autosnap --noconfirm --answerclean All --answerdiff All" -u nobody
+sudo -u nobody yay -S timeshift-autosnap --noconfirm --answerclean All --answerdiff All -u nobody
 
-yay -S ttf-ms-win10-auto --noconfirm --answerclean All --answerdiff All -u nobody 
-yay -S ttf-ms-win11-auto --noconfirm --answerclean All --answerdiff All -u nobody 
+sudo -u nobody yay -S ttf-ms-win10-auto --noconfirm --answerclean All --answerdiff All -u nobody 
+sudo -u nobody yay -S ttf-ms-win11-auto --noconfirm --answerclean All --answerdiff All -u nobody 
 
 #undo this monstrosity
 sed -i 's|%wheel ALL=(ALL:ALL) ALL NOPASSWD|# %wheel ALL=(ALL:ALL) NOPASSWD: ALL|' /etc/sudoers
