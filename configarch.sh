@@ -113,7 +113,7 @@ echo "-------------------------------------------------"
 echo "Setting up snapshots"
 echo "-------------------------------------------------"
 
-pacman -S timeshift --noconfirm --needed
+pacman -S timeshift grub-btrfs --noconfirm --needed
 
 
 
@@ -208,12 +208,12 @@ sudo -u nobody yay -Syu --devel
 sudo -u nobody yay -Y --devel --save
 
 #best discord client in 2024
-sudo -u nobody yay -S vesktop --noconfirm --answerclean All --answerdiff All -u nobody
+#I'm really struggling to get this to work though
+#sudo -u nobody yay -S vesktop --noconfirm --answerclean All --answerdiff None -u nobody
 
 #Make snapshots happen on running pacman
 sudo -u nobody yay -S timeshift-autosnap --noconfirm --answerclean All --answerdiff All -u nobody
 
-sudo -u nobody yay -S ttf-ms-win10-auto --noconfirm --answerclean All --answerdiff All -u nobody 
 sudo -u nobody yay -S ttf-ms-win11-auto --noconfirm --answerclean All --answerdiff All -u nobody 
 
 read -p "did this work ctrl + c to cancel early and stop the cleanup?"
