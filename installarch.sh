@@ -128,5 +128,7 @@ genfstab -U /mnt >> /mnt/etc/fstab
 
 cat /mnt/etc/fstab
 
-#read -p "fstab done please check output(enter)"
-
+#Creating the /etc/resolv.conf symlink will not be possible while inside arch-chroot,
+#the file is bind-mounted from the outside system.
+#Instead, create the symlink from outside the chroot. E.g. 
+ln -sf ../run/systemd/resolve/stub-resolv.conf /mnt/etc/resolv.conf

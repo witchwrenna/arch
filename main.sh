@@ -25,7 +25,6 @@ arch-chroot /mnt sh configarch.sh $diskid $efi $root $user $group
 
 #This stuff will run on first boot through hyprland.conf
 
-
 #Copying refind configuration
 #mkdir -p /mnt/boot/efi/EFI/refind/
 #mv arch-main/config/refind.conf /mnt/boot/efi/EFI/refind/refind.conf
@@ -33,6 +32,7 @@ arch-chroot /mnt sh configarch.sh $diskid $efi $root $user $group
 # todo: 
 # Git script does not apply alias and config changes because of chroot?
 # rice hyprland
+# Configure... waybar
 # refind uggly af fix that shit
 # sound not working
 # set up plymouth? look into alternatives too

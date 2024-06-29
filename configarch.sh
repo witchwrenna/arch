@@ -89,9 +89,9 @@ echo "-------------------------------------------------"
 echo "Installing display Drivers"
 echo "-------------------------------------------------"
 
-#Should include nvidia drivers + vulkan + Cuda + OpenCL
+#Should include nvidia drivers + vulkan + Cuda + OpenCL +32bit opengl
 #https://wiki.hyprland.org/Nvidia/
-pacman -S nvidia nvidia-utils nvidia-settings libva-nvidia-driver --noconfirm --needed
+pacman -S nvidia nvidia-utils lib32-nvidia-utils nvidia-settings libva-nvidia-driver --noconfirm --needed
 
 
 echo "-------------------------------------------------"
@@ -165,7 +165,10 @@ echo "Installing wayland + hyprland"
 echo "-------------------------------------------------"
 
 #Following https://wiki.hyprland.org/Nvidia/
-pacman -S egl-wayland hyprland waybar fuzzel udiskie cliphist kitty polkit polkit-kde-agent xdg-desktop-portal-hyprland xdg-desktop-portal-gtk qt5-wayland qt6-wayland --noconfirm --needed
+# Get base hyprland going
+pacman -S egl-wayland hyprland polkit polkit-kde-agent xdg-desktop-portal-hyprland xdg-desktop-portal-gtk qt5-wayland qt6-wayland --noconfirm --needed
+#Chosen software for stuff
+pacman -S waybar fuzzel udiskie cliphist pavucontrol kitty grim slurp --noconfirm --needed
 
 sed -i 's/^MODULES=()/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
 echo "options nvidia_drm modeset=1 fbdev=1" > /etc/modprobe.d/nvidia.conf
@@ -194,13 +197,20 @@ echo "-- Installing the important stuff --"
 echo "--------------------------------------"
 
 #assorted utilities
-pacman -S hyfetch man htop bat neovim nano less fzf openssh --noconfirm --needed
+pacman -S hyfetch man htop bat neovim nano less fzf openssh yazi --noconfirm --needed
 
 #zsh rice
 pacman -S ttf-firacode-nerd starship eza zsh-syntax-highlighting zsh-autosuggestions --noconfirm --needed
 
 #firefox
-pacman -S firefox --noconfirm --needed
+pacman -S firefox hunspell hunspell-en_us --noconfirm --needed
+
+#U KNOW IT
+pacman -S steam lib32-systemd wqy-zenhei lib32-fontconfig ttf-liberation  --noconfirm --needed
+
+#Having the vm.max_map_count set to a low value can affect the stability and performance of some games.
+#It can therefore be desirable to increase the size permanently by creating the following sysctl config file. 
+echo "vm.max_map_count = 2147483642" >> /etc/sysctl.d/80-gamecompatibility.conf
 
 #install nvchad
 # doesn't work need to do it manually I think?
@@ -237,6 +247,9 @@ sudo sh -c "yes | yay -S vesktop --noconfirm --answerclean All --answerdiff All"
 
 #Make snapshots happen on running pacman
 sudo sh -c "yes | yay -S timeshift-autosnap --noconfirm --answerclean All --answerdiff All" -u nobody
+
+yay -S ttf-ms-win10-auto --noconfirm --answerclean All --answerdiff All -u nobody 
+yay -S ttf-ms-win11-auto --noconfirm --answerclean All --answerdiff All -u nobody 
 
 #undo this monstrosity
 sed -i 's|%wheel ALL=(ALL:ALL) ALL NOPASSWD|# %wheel ALL=(ALL:ALL) NOPASSWD: ALL|' /etc/sudoers
