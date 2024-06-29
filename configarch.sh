@@ -93,7 +93,6 @@ echo "-------------------------------------------------"
 #https://wiki.hyprland.org/Nvidia/
 pacman -S nvidia nvidia-utils lib32-nvidia-utils nvidia-settings libva-nvidia-driver --noconfirm --needed
 
-
 echo "-------------------------------------------------"
 echo "Setting up GRUB"
 echo "-------------------------------------------------"
@@ -142,7 +141,6 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 
 #echo "include themes/rEFInd-minimal/theme.conf" >> /boot/efi/EFI/refind/refind.conf
-
 
 echo "-------------------------------------------------"
 echo "Setting up snapshots"
