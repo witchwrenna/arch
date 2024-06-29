@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 curl -LO https://github.com/witchwrenna/arch/archive/master.zip
+pacman-key --init
 pacman -Sy unzip --noconfirm --needed
 unzip -o ~/master.zip
 
