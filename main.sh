@@ -24,6 +24,8 @@ mv arch-main/configarch.sh /mnt/configarch.sh
 #put this here to run on first boot through hyprland.conf
 # will download dot files
 mv arch-main/postinstall.sh /mnt/home/$user/postinstall.sh
+#My current pacman conf
+mv arch-main/config/pacman.conf /mnt/etc/pacman.conf
 
 arch-chroot /mnt sh configarch.sh $diskid $efi $root $user $group
 

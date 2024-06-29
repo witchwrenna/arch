@@ -25,13 +25,18 @@ echo "Setup pacman"
 echo "-------------------------------------------------"
 
 #Let's enable parallel downloads, colours, and sync the latest stuff :3
-sed -i 's/#ParallelDownloads.*/ParallelDownloads=10/' /etc/pacman.conf
-sed -i '/Color/s/^#//g' /etc/pacman.conf
+# sed -i 's/#ParallelDownloads.*/ParallelDownloads=10/' /etc/pacman.conf
+# sed -i '/Color/s/^#//g' /etc/pacman.conf
+# sed -i 's|#\[multilib\]|[multilib]|' /etc/pacman.conf
+# sed -i 's|#Include = /etc/pacman.d/mirrorlist|Include = /etc/pacman.d/mirrorlist|' /etc/pacman.conf
+# Moved to seperate pacman.conf supplied file
+
+pacman -Sy
 
 #lol
 #echo "ILoveCandy" >> /etc/pacman.conf
 
-pacman -S base-devel reflector --needed --noconfirm #for AUR
+pacman -Sy base-devel reflector --needed --noconfirm #for AUR
 
 systemctl enable reflector.timer
 
