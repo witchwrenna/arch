@@ -24,18 +24,9 @@ echo "-------------------------------------------------"
 echo "Setup pacman"
 echo "-------------------------------------------------"
 
-#Let's enable parallel downloads, colours, and sync the latest stuff :3
-# sed -i 's/#ParallelDownloads.*/ParallelDownloads=10/' /etc/pacman.conf
-# sed -i '/Color/s/^#//g' /etc/pacman.conf
-# sed -i 's|#\[multilib\]|[multilib]|' /etc/pacman.conf
-# sed -i 's|#Include = /etc/pacman.d/mirrorlist|Include = /etc/pacman.d/mirrorlist|' /etc/pacman.conf
-# Moved to seperate pacman.conf supplied file
-
 pacman -Sy
 
-#lol
-#echo "ILoveCandy" >> /etc/pacman.conf
-
+#Need to finish setting this up
 pacman -Sy base-devel reflector --needed --noconfirm #for AUR
 
 systemctl enable reflector.timer
@@ -225,8 +216,6 @@ sudo -u nobody yay -S ttf-ms-win11-auto --noconfirm --answerclean All --answerdi
 read -p "did this work ctrl + c to cancel early and stop the cleanup?"
 
 sleep 5
-
-
 
 
 echo "-------------------------------------------------"
