@@ -7,18 +7,7 @@ root=$3
 user=$4
 group=$5
 
-systemctl enable fstrim.timer
-
-echo "-------------------------------------------------"
-echo "Setup user and group"
-echo "-------------------------------------------------"
-
-groupadd $group
-sed -i 's|SHELL=.*|SHELL=/usr/bin/zsh|' /etc/default/useradd
-useradd -m -g $group -s /bin/zsh $user
-usermod -aG wheel,storage,audio,video $user
-echo $user:$user | chpasswd
-sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
+read -p "ensure your /etc/pacman.conf file has multilib enabled"
 
 echo "-------------------------------------------------"
 echo "Setup pacman"
@@ -29,18 +18,8 @@ pacman -Sy
 #Need to finish setting this up
 pacman -Sy base-devel reflector --needed --noconfirm #for AUR
 
+systemctl enable fstrim.timer
 systemctl enable reflector.timer
-
-echo "-------------------------------------------------"
-echo "Setup Language to US and set locale"
-echo "-------------------------------------------------"
-sed -i 's/^#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
-locale-gen
-echo "LANG=en_US.UTF-8" >> /etc/locale.conf
-
-ln -sf /usr/share/zoneinfo/US/Eastern /etc/localtime
-hwclock --systohc
-
 
 echo "-------------------------------------------------"
 echo "Setting up hostname"
@@ -51,7 +30,6 @@ cat <<EOF > /etc/hosts
 ::1			localhost
 127.0.1.1	slut.localdomain	slut
 EOF
-
 
 echo "-------------------------------------------------"
 echo "Setting up Networking"
@@ -73,7 +51,7 @@ EOF
 
 #set up home domain
 #following https://www.rfc-editor.org/rfc/rfc8375.html
-sed -i 's/^#Domains=/Domains=home.arpa/' /etc/systemd/resolved.conf
+sed -i 's/^#Domains=.*/Domains=home.arpa/' /etc/systemd/resolved.conf
 
 systemctl enable systemd-networkd.service 
 systemctl enable systemd-resolved.service 
@@ -113,7 +91,6 @@ echo "-------------------------------------------------"
 pacman -S timeshift grub-btrfs --noconfirm --needed
 
 
-
 echo "-------------------------------------------------"
 echo "Setting up audio"
 echo "-------------------------------------------------"
@@ -135,7 +112,7 @@ pacman -S waybar fuzzel udiskie cliphist pavucontrol kitty grim slurp --noconfir
 sed -i 's/^MODULES=()/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
 echo "options nvidia_drm modeset=1 fbdev=1" > /etc/modprobe.d/nvidia.conf
 mkinitcpio -P
-#Check for errors of missing nvidia headers or whatever after mkinicpio
+Check for errors of missing nvidia headers or whatever after mkinicpio
 
 
 echo "--------------------------------------"
@@ -186,53 +163,24 @@ echo "--------------------------------------"
 #all for scripting out vesktop install...
 # http://allanmcrae.com/2015/01/replacing-makepkg-asroot/
 
-pacman -S --needed --noconfirm base-devel
+git clone https://aur.archlinux.org/yay-bin.git ~/yay-bin
+chmod -R g+w ~/yay-bin
+cd ~/yay-bin
 
-usermod -aG wheel nobody
-sed -i 's|# %wheel ALL=(ALL:ALL) NOPASSWD: ALL|%wheel ALL=(ALL:ALL) NOPASSWD: ALL|' /etc/sudoers
-
-mkdir /home/build
-chgrp nobody /home/build
-chmod g+ws /home/build
-setfacl -m u::rwx,g::rwx /home/build
-setfacl -d --set u::rwx,g::rwx,o::- /home/build
-git clone https://aur.archlinux.org/yay-bin.git /home/build/yay-bin
-chmod -R g+w /home/build/yay-bin/
-cd /home/build/yay-bin/
-
-sudo -u nobody makepkg -si --noconfirm
+sudo makepkg -si --noconfirm
 #yay -Y --gendb #can't get this to work in chroot, but only applies to packages that are *-git anyway
-sudo -u nobody yay -Syu --devel
-sudo -u nobody yay -Y --devel --save
+sudo yay -Syu --devel
+sudo yay -Y --devel --save
 
-#best linux discord client in 2024
-#I'm really struggling to get this to work though
-#sudo -u nobody yay -S vesktop --noconfirm --answerclean All --answerdiff None -u nobody
+sudo yay -S vesktop --noconfirm --answerclean All --answerdiff None --needed
 
 #Make snapshots happen on running pacman
-sudo -u nobody yay -S timeshift-autosnap --noconfirm --answerclean All --answerdiff None -u nobody
+sudo yay -S timeshift-autosnap --noconfirm --answerclean All --answerdiff None --needed
 
-sudo -u nobody yay -S ttf-ms-win11-auto --noconfirm --answerclean All --answerdiff None -u nobody 
-
-read -p "did this work ctrl + c to cancel early and stop the cleanup?"
+sudo yay -S ttf-ms-win11-auto --noconfirm --answerclean All --answerdiff None --needed
 
 sleep 5
 
-
 echo "-------------------------------------------------"
-echo "cleaning up"
-echo "-------------------------------------------------"
-
-#undo makepkg monstrosity
-sed -i 's|%wheel ALL=(ALL:ALL) NOPASSWD: ALL|# %wheel ALL=(ALL:ALL) NOPASSWD: ALL|' /etc/sudoers
-usermod -G nobody nobody        
-rm -rf /home/build
-
-#Fix permission issues caused by using chroot
-#doesn't seem to work so using -v
-chown -v -hR $user:$group /home/$user/
-
-
-echo "-------------------------------------------------"
-echo "Install Complete, You can reboot now"
+echo "refresh Complete"
 echo "-------------------------------------------------"
