@@ -65,7 +65,7 @@ echo "-------------------------------------------------"
 
 #Should include nvidia drivers + vulkan + Cuda + OpenCL +32bit opengl
 #https://wiki.hyprland.org/Nvidia/
-pacman -S nvidia nvidia-utils lib32-nvidia-utils nvidia-settings libva-nvidia-driver --noconfirm --needed
+pacman -S nvidia nvidia-utils lib32-nvidia-utils nvidia-settings vulkan-icd-loader lib32-vulkan-icd-loader libva-nvidia-driver --noconfirm --needed
 
 echo "-------------------------------------------------"
 echo "Setting up GRUB"
