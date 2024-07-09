@@ -23,6 +23,7 @@ if $creation ; then
 else
     git clone --bare https://github.com/witchwrenna/dotfiles $HOME/.dotfiles
     dotfiles checkout -f
+    dotfiles config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
 fi
 
 dotfiles config --local status.showUntrackedFiles no

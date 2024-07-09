@@ -184,3 +184,7 @@ sleep 5
 echo "-------------------------------------------------"
 echo "refresh Complete"
 echo "-------------------------------------------------"
+
+
+#todo:add obsidian
+#Also....btrfs snapshots setup
