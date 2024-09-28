@@ -7,7 +7,7 @@ root=$3
 # BIG FUCKING WARNING
 #Partitions are hard coded to my 4TB nvme drive in main.sh!!!!!!!!!!! REPLACE THAT IF USING A DIFFERENT DRIVE
 
-echo -e "\nPartitions are hard coded to my 4TB nvme drive!!!!!!!!!!! IF YOU ARE NOT WREN THEN YOU NEED TO UPDATE THE SCRIPT"
+echo -e "\nPartitions are hard coded to my 4TB nvme drive!!!!!!!!!!!
 echo -e "\nIf you didn't manually format your drive and create your partitions and update the script variables, you HAVE to do this now or this script will fail"
 echo -e "\nCheck the script comments and understand what it's doing."
 echo -e "\nThis is NOT a general installation script, it is hard coded to my computer and preferences"
