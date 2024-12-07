@@ -164,7 +164,7 @@ echo "-- Installing the important stuff --"
 echo "--------------------------------------"
 
 #assorted utilities
-pacman -S hyfetch man btop bat neovim nano less fzf openssh yazi dunst --noconfirm --needed
+pacman -S hyfetch man btop bat neovim nano less fzf openssh yazi --noconfirm --needed
 
 #zsh rice
 pacman -S ttf-firacode-nerd starship eza zsh-syntax-highlighting zsh-autosuggestions --noconfirm --needed
