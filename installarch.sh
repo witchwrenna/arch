@@ -91,7 +91,7 @@ mount -o noatime,ssd,space_cache=v2,compress=zstd,discard=async,subvol=@ "${root
 
 mkdir -p /mnt/home /mnt/.snapshots /mnt/var/log /mnt/var/cache
 mount -o noatime,ssd,space_cache=v2,compress=zstd,discard=async,subvol=@home "${root}" /mnt/home
-mount -o noatime,ssd,space_cache=v2,compress=zstd,discard=async,subvol=@snapshots "${root}" /mnt/.snapshots
+mount -o noatime,ssd,space_cache=v2,compress=zstd,discard=async,subvol=@snapshots "${root}" /mnt/snapshots
 mount -o noatime,ssd,space_cache=v2,compress=zstd,discard=async,subvol=@var_log "${root}" /mnt/var/log
 mount -o noatime,ssd,space_cache=v2,compress=zstd,discard=async,subvol=@var_cache "${root}" /mnt/var/cache
 
@@ -106,7 +106,7 @@ mount -t vfat "${efi}" /mnt/boot/efi
 echo -e "\nCreating Swap File\n"
 
 btrfs subvolume create /mnt/swap
-btrfs filesystem mkswapfile --size 4g --uuid clear /mnt/swap/swapfile
+btrfs filesystem mkswapfile --size 16g --uuid clear /mnt/swap/swapfile
 swapon /mnt/swap/swapfile
 
 #read -p "filesystem done (enter)"
