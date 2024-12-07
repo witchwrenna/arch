@@ -135,7 +135,7 @@ echo "-------------------------------------------------"
 # Get base hyprland going
 pacman -S egl-wayland hyprland polkit polkit-kde-agent xdg-desktop-portal-hyprland xdg-desktop-portal-gtk archlinux-xdg-menu qt5-wayland qt6-wayland --noconfirm --needed
 #Chosen software for stuff
-pacman -S waybar fuzzel udiskie cliphist pavucontrol kitty grim slurp --noconfirm --needed
+pacman -S waybar fuzzel udiskie cliphist pavucontrol kitty grim slurp gifsicle --noconfirm --needed
 
 sed -i 's/^MODULES=()/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
 echo "options nvidia_drm modeset=1 fbdev=1" > /etc/modprobe.d/nvidia.conf
