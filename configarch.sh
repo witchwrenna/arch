@@ -164,7 +164,7 @@ echo "-- Installing the important stuff --"
 echo "--------------------------------------"
 
 #assorted utilities
-pacman -S hyfetch man htop bat neovim nano less fzf openssh yazi --noconfirm --needed
+pacman -S hyfetch man btop bat neovim nano less fzf openssh yazi dunst --noconfirm --needed
 
 #zsh rice
 pacman -S ttf-firacode-nerd starship eza zsh-syntax-highlighting zsh-autosuggestions --noconfirm --needed
@@ -217,7 +217,12 @@ sudo -u nobody yay -Y --devel --save
 #Make snapshots happen on running pacman
 sudo -u nobody yay -S timeshift-autosnap --noconfirm --answerclean All --answerdiff None -u nobody
 
+# Annoying but needed for steam fonts to look nice
 sudo -u nobody yay -S ttf-ms-win11-auto --noconfirm --answerclean All --answerdiff None -u nobody 
+
+#Get alerted on read only file system error
+sudo -u nobody yay -S  btrfs-desktop-notification --noconfirm --answerclean All --answerdiff None -u nobody
+
 
 read -p "did this work ctrl + c to cancel early and stop the cleanup?"
 
