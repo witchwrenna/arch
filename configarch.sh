@@ -7,7 +7,12 @@ root=$3
 user=$4
 group=$5
 
+echo "-------------------------------------------------"
+echo "Setup Storage health"
+echo "-------------------------------------------------"
+
 systemctl enable fstrim.timer
+systemctl enable btrfs-scrub@-.timer
 
 echo "-------------------------------------------------"
 echo "Setup user and group"
