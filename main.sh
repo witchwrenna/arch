@@ -2,6 +2,7 @@
 
 #Script entry point
 #I recommend modifying the variables before running anything or it will try to do hard drive modifications
+# Then run the postinstall script once you're in the new install
 
 curl -LO https://github.com/witchwrenna/arch/archive/master.zip
 pacman-key --init
