@@ -34,26 +34,12 @@ mv arch-main/config/pacman.conf /mnt/etc/pacman.conf
 arch-chroot /mnt sh configarch.sh $diskid $efi $root $user $group
 
 
-
-# todo: 
-# Git script does not apply alias and config changes because of chroot?
-# rice hyprland
-# Configure... waybar
-# refind uggly af fix that shit
-# sound not working
-# set up plymouth? look into alternatives too
-# https://wiki.archlinux.org/title/Category:Eye_candy
-# https://github.com/fosslife/awesome-ricing
 # Timeshift on btrfs with grub-btrfs can't be beat for snappyshots :3
 # visual studio code?
 # set font for kitty - partially done still need to look into it
 # install gh for authentication
 # then do gh auth setup-git
-# configure waybar + all the other hyprland stuff
 # screensaver??
-# maybe have a base install + additional programs?
-# maybe some stuff should be seperate and not part of a base install
-# copy paste is fucky
 # sddm rice
 # setup keyboard volume knob
 
@@ -62,10 +48,6 @@ arch-chroot /mnt sh configarch.sh $diskid $efi $root $user $group
 
 # try this theme lol
 # https://github.com/Naezr/ShyFox/blob/main/showcase.md
-
-#more dots to check out
-# https://github.com/Naezr/ShyFox/blob/main/showcase.md
-# 
 
 #swap caps lock key in hyprland
 
