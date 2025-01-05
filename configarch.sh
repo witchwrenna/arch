@@ -173,7 +173,7 @@ pacman -S ttf-firacode-nerd starship eza zsh-syntax-highlighting zsh-autosuggest
 pacman -S firefox hunspell hunspell-en_us --noconfirm --needed
 
 #U KNOW IT
-pacman -S steam lib32-systemd wqy-zenhei lib32-fontconfig ttf-liberation  --noconfirm --needed
+pacman -S steam lib32-systemd wqy-zenhei lib32-fontconfig ttf-liberation noto-fonts-emoji gnu-free-fonts ttf-arphic-uming ttf-indic-otf --noconfirm --needed
 
 #Having the vm.max_map_count set to a low value can affect the stability and performance of some games.
 #It can therefore be desirable to increase the size permanently by creating the following sysctl config file. 
