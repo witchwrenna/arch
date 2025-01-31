@@ -31,6 +31,9 @@ dotfiles config --local status.showUntrackedFiles no
 cd ~
 git clone https://github.com/witchwrenna/arch $HOME/arch
 
+hyprpm add https://github.com/KZDKM/Hyprspace
+hyprpm enable Hyprspace
+
 # To add stuff...
 # dotfiles add $Filename
 # dotfiles commit -m "Updating file!"
