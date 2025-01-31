@@ -142,6 +142,8 @@ echo "options nvidia_drm modeset=1 fbdev=1" > /etc/modprobe.d/nvidia.conf
 mkinitcpio -P
 #Check for errors of missing nvidia headers or whatever after mkinicpio
 
+#For hyprpm plugin support
+pacman -S cmake meson cpio pkg-config --noconfirm --needed
 
 echo "--------------------------------------"
 echo "-- Installing login manager --"
